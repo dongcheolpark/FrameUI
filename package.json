@@ -1,6 +1,7 @@
 {
   "name": "FrameUI",
   "version": "1.0.0",
+  "private": true,
   "description": "React headless UI component framework",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -17,6 +18,9 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
+    "app:dev": "pnpm --filter ./app dev",
+    "app:build": "pnpm --filter ./app build",
+    "app:preview": "pnpm --filter ./app preview",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "test": "vitest run",
