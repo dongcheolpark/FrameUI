@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
-import type { ButtonHTMLAttributes } from "react";
+import type { InputHTMLAttributes } from "react";
 
-type NativeButtonProps = Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  "checked" | "defaultChecked" | "onChange"
+type NativeInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "checked" | "defaultChecked" | "onChange" | "type"
 >;
 
-export interface SwitchProps extends NativeButtonProps {
+export interface SwitchProps extends NativeInputProps {
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -17,7 +17,6 @@ export function Switch({
   defaultChecked = false,
   onCheckedChange,
   disabled = false,
-  type,
   ...props
 }: SwitchProps) {
   const [uncontrolledChecked, setUncontrolledChecked] =
@@ -44,16 +43,23 @@ export function Switch({
   }, [currentChecked, disabled, isControlled, onCheckedChange]);
 
   return (
-    <button
-      type={type ?? "button"}
-      role="switch"
-      aria-checked={currentChecked}
-      aria-disabled={disabled || undefined}
+    <label
       data-state={currentChecked ? "checked" : "unchecked"}
       data-disabled={disabled ? "" : undefined}
-      disabled={disabled}
-      onClick={toggleChecked}
-      {...props}
-    />
+      style={{ cursor: disabled ? "not-allowed" : "pointer" }}
+    >
+      <input
+        type="checkbox"
+        checked={currentChecked}
+        disabled={disabled}
+        onChange={toggleChecked}
+        style={{
+          position: "absolute",
+          left: "-9999px",
+        }}
+        {...props}
+      />
+      <div className="handle" />
+    </label>
   );
 }

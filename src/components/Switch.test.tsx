@@ -8,21 +8,24 @@ describe("Switch", () => {
   it("기본 상태는 unchecked를 노출한다", () => {
     render(<Switch aria-label="알림" />);
 
-    const switchElement = screen.getByRole("switch", { name: "알림" });
+    const labelElement = screen.getByRole("checkbox", {
+      name: "알림",
+    }).parentElement;
 
-    expect(switchElement).toHaveAttribute("data-state", "unchecked");
-    expect(switchElement).toHaveAttribute("aria-checked", "false");
+    expect(labelElement).toHaveAttribute("data-state", "unchecked");
   });
 
   it("uncontrolled 모드에서 클릭 시 토글된다", async () => {
     const user = userEvent.setup();
     render(<Switch aria-label="다크모드" defaultChecked={false} />);
 
-    const switchElement = screen.getByRole("switch", { name: "다크모드" });
-    await user.click(switchElement);
+    const checkboxElement = screen.getByRole("checkbox", { name: "다크모드" });
+    await user.click(checkboxElement);
 
-    expect(switchElement).toHaveAttribute("data-state", "checked");
-    expect(switchElement).toHaveAttribute("aria-checked", "true");
+    expect(checkboxElement.parentElement).toHaveAttribute(
+      "data-state",
+      "checked",
+    );
   });
 
   it("onCheckedChange를 호출한다", async () => {
@@ -31,7 +34,7 @@ describe("Switch", () => {
 
     render(<Switch aria-label="자동저장" onCheckedChange={onCheckedChange} />);
 
-    await user.click(screen.getByRole("switch", { name: "자동저장" }));
+    await user.click(screen.getByRole("checkbox", { name: "자동저장" }));
 
     expect(onCheckedChange).toHaveBeenCalledWith(true);
     expect(onCheckedChange).toHaveBeenCalledTimes(1);
@@ -50,11 +53,13 @@ describe("Switch", () => {
       />,
     );
 
-    const switchElement = screen.getByRole("switch", { name: "푸시 알림" });
-    await user.click(switchElement);
+    const checkboxElement = screen.getByRole("checkbox", { name: "푸시 알림" });
+    const labelElement = checkboxElement.parentElement;
 
-    expect(switchElement).toHaveAttribute("data-state", "checked");
-    expect(switchElement).toHaveAttribute("data-disabled");
+    await user.click(checkboxElement);
+
+    expect(labelElement).toHaveAttribute("data-state", "checked");
+    expect(labelElement).toHaveAttribute("data-disabled");
     expect(onCheckedChange).not.toHaveBeenCalled();
   });
 });
