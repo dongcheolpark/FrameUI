@@ -1,0 +1,65 @@
+/* Switch Component Styling */
+
+[data-component="switch"],
+[data-component="switch"] .handle {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Unchecked state */
+[data-component="switch"][data-state="unchecked"] .handle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: #d1d5db;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+/* Checked state */
+[data-component="switch"][data-state="checked"] .handle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: #10b981;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+/* Handle slider - unchecked position */
+[data-component="switch"][data-state="unchecked"] .handle::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: left 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Handle slider - checked position */
+[data-component="switch"][data-state="checked"] .handle::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: left 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled state */
+[data-component="switch"][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-component="switch"][data-disabled] .handle {
+  cursor: not-allowed;
+}
