@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button, FRAME_UI_VERSION } from "FrameUI";
 import { Switch } from "../../src/components/Switch/Switch"; 
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "../../src/components/Modal/Modal";
+import { CheckboxCard } from "../../src/components/CheckboxCard/CheckboxCard";
 
 export function App() {
   const [count, setCount] = useState(0);
-  const [isOn, setIsOn] = useState(false); 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOn, setIsOn] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   return (
     <main className="page">
@@ -15,39 +15,42 @@ export function App() {
         <p>라이브러리 버전: {FRAME_UI_VERSION}</p>
         <p>버튼 클릭 수: {count}</p>
         
-        <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', gap: '10px', flexDirection: 'column', marginTop: '20px' }}>
           <Button
             label="클릭해보기"
             onClick={() => setCount((value) => value + 1)}
           />
-          <Button 
-            label="모달 열기 (Open Modal)" 
-            onClick={() => setIsModalOpen(true)} 
-          />
         </div>
 
-        {/* Switch */}
+        {/* Checkbox Card Section */}
+        <div className="divider" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
+          <p style={{ marginBottom: "15px", fontWeight: "bold" }}>플랜 선택 (Checkbox Cards):</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <CheckboxCard
+              title="기본 플랜 (Basic)"
+              description="개인 프로젝트를 위한 핵심 기능 제공"
+              isSelected={selectedPlan === 'basic'}
+              onSelect={() => setSelectedPlan('basic')}
+            />
+            <CheckboxCard
+              title="프로 플랜 (Pro)"
+              description="고급 기능 및 우선 순위 지원 포함"
+              isSelected={selectedPlan === 'pro'}
+              onSelect={() => setSelectedPlan('pro')}
+            />
+          </div>
+        </div>
+
+        {/* Switch Section */}
         <div className="divider" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
            <p style={{ marginBottom: "10px" }}>
-            스위치 상태: <strong>{isOn ? "켜짐 (ON)" : "꺼짐 (OFF)"}</strong>
+            알림 상태: <strong>{isOn ? "켜짐 (ON)" : "꺼짐 (OFF)"}</strong>
           </p>
           <Switch 
             checked={isOn} 
             onChange={setIsOn} 
           />
         </div>
-
-        {/* Modal
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <ModalHeader>알림 (Notice)</ModalHeader>
-          <ModalBody>
-            <p>FrameUI에 새로운 모달 컴포넌트가 추가되었습니다!</p>
-            <p>현재 스위치 상태는 <strong>{isOn ? "켜짐" : "꺼짐"}</strong> 입니다.</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button label="닫기" onClick={() => setIsModalOpen(false)} />
-          </ModalFooter>
-        </Modal> */}
 
       </section>
     </main>
