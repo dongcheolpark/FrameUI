@@ -97,14 +97,7 @@ describe("Textarea", () => {
   });
 
   it("disabled/readOnly/invalid 상태를 data 속성으로 노출한다", () => {
-    render(
-      <Textarea
-        aria-label="상태"
-        disabled
-        readOnly
-        invalid
-      />,
-    );
+    render(<Textarea aria-label="상태" disabled readOnly invalid />);
 
     const textarea = screen.getByRole("textbox", { name: "상태" });
 
@@ -112,5 +105,37 @@ describe("Textarea", () => {
     expect(textarea).toHaveAttribute("data-readonly");
     expect(textarea).toHaveAttribute("data-invalid");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
+  });
+
+  describe("Compound Components & Slots", () => {
+    it("actionSlot을 제공하면 확장된 Wrapper와 Action 슬롯을 렌더링한다", () => {
+      render(
+        <Textarea
+          aria-label="채팅옵션"
+          actionSlot={<button type="button">전송버튼</button>}
+        />,
+      );
+      
+      const textbox = screen.getByRole("textbox", { name: "채팅옵션" });
+      const button = screen.getByRole("button", { name: "전송버튼" });
+      
+      expect(textbox).toBeInTheDocument();
+      expect(button).toBeInTheDocument();
+    });
+
+    it("Compound Pattern을 통해 수동 설계 렌더링이 가능하다", () => {
+      render(
+        <Textarea.Root data-testid="custom-wrapper">
+          <Textarea.Input aria-label="직접제어입력" />
+          <Textarea.Action>
+            <button>확인버튼</button>
+          </Textarea.Action>
+        </Textarea.Root>,
+      );
+
+      expect(screen.getByTestId("custom-wrapper")).toBeInTheDocument();
+      expect(screen.getByRole("textbox", { name: "직접제어입력" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "확인버튼" })).toBeInTheDocument();
+    });
   });
 });

@@ -1,16 +1,13 @@
-import { useMemo, useState } from "react";
-import type {
-  ChangeEvent,
-  KeyboardEvent,
-  TextareaHTMLAttributes,
-} from "react";
+import { useMemo, useState, createContext, useContext } from "react";
+import type { ChangeEvent, KeyboardEvent, TextareaHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 
-type NativeTextareaProps = Omit<
+// --- Types ---
+export type NativeTextareaProps = Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
   "value" | "defaultValue"
 >;
 
-export interface TextareaProps extends NativeTextareaProps {
+export interface TextareaInputProps extends NativeTextareaProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -24,7 +21,46 @@ export interface TextareaProps extends NativeTextareaProps {
   invalid?: boolean;
 }
 
-export function Textarea({
+export interface TextareaRootProps extends HTMLAttributes<HTMLDivElement> {
+  children?: ReactNode;
+}
+
+export interface TextareaActionProps extends HTMLAttributes<HTMLDivElement> {
+  children?: ReactNode;
+}
+
+// --- Context ---
+const TextareaContext = createContext<{
+  isOverflow: boolean;
+  invalid: boolean;
+  disabled: boolean;
+  readOnly: boolean;
+} | null>(null);
+
+export function useTextareaContext() {
+  return useContext(TextareaContext);
+}
+
+// --- Components ---
+export function TextareaRoot({ children, className, style, ...props }: TextareaRootProps) {
+  return (
+    <div
+      data-ui="textarea-wrapper"
+      className={className}
+      style={{
+        display: "flex",
+        alignItems: "flex-end", // Push action to bottom
+        gap: "8px", 
+        ...style
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function TextareaInput({
   value,
   defaultValue = "",
   onValueChange,
@@ -38,8 +74,9 @@ export function Textarea({
   onChange,
   onKeyDown,
   style,
+  ref, // React 19 forwardRef 대체
   ...props
-}: TextareaProps) {
+}: TextareaInputProps & { ref?: React.Ref<HTMLTextAreaElement> }) {
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
   const isControlled = value !== undefined;
 
@@ -89,7 +126,12 @@ export function Textarea({
       return;
     }
 
-    if (enterKeyBehavior === "submit" && !event.shiftKey && !disabled && !readOnly) {
+    if (
+      enterKeyBehavior === "submit" &&
+      !event.shiftKey &&
+      !disabled &&
+      !readOnly
+    ) {
       event.preventDefault();
       onSubmitEnter?.(currentValue, event);
     }
@@ -98,23 +140,67 @@ export function Textarea({
   const ariaInvalid = invalid || props["aria-invalid"] ? true : undefined;
 
   return (
-    <textarea
-      value={currentValue}
-      rows={computedRows}
-      disabled={disabled}
-      readOnly={readOnly}
-      aria-invalid={ariaInvalid}
-      data-disabled={disabled ? "" : undefined}
-      data-readonly={readOnly ? "" : undefined}
-      data-invalid={invalid ? "" : undefined}
-      data-overflow={isOverflow ? "" : undefined}
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
-      style={{
-        overflowY: isOverflow ? "auto" : "hidden",
-        ...style,
-      }}
-      {...props}
-    />
+    <TextareaContext.Provider value={{ isOverflow, invalid, disabled, readOnly }}>
+      <textarea
+        ref={ref}
+        value={currentValue}
+        rows={computedRows}
+        disabled={disabled}
+        readOnly={readOnly}
+        aria-invalid={ariaInvalid}
+        data-disabled={disabled ? "" : undefined}
+        data-readonly={readOnly ? "" : undefined}
+        data-invalid={invalid ? "" : undefined}
+        data-overflow={isOverflow ? "" : undefined}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        style={{
+          flex: 1, // Full width in flex container
+          overflowY: isOverflow ? "auto" : "hidden",
+          ...style,
+        }}
+        {...props}
+      />
+    </TextareaContext.Provider>
   );
 }
+
+export function TextareaAction({ children, className, ...props }: TextareaActionProps) {
+  return (
+    <div
+      data-ui="textarea-action"
+      className={className}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Default Component for backward compatibility and quick usage
+export function TextareaPrimitive({
+  actionSlot,
+  rootProps,
+  ...inputProps
+}: TextareaInputProps & { 
+  actionSlot?: ReactNode; 
+  rootProps?: TextareaRootProps;
+  ref?: React.Ref<HTMLTextAreaElement>;
+}) {
+  if (actionSlot) {
+    return (
+      <TextareaRoot {...rootProps}>
+        <TextareaInput {...inputProps} />
+        <TextareaAction>{actionSlot}</TextareaAction>
+      </TextareaRoot>
+    );
+  }
+
+  return <TextareaInput {...inputProps} />;
+}
+
+export const Textarea = Object.assign(TextareaPrimitive, {
+  Root: TextareaRoot,
+  Input: TextareaInput,
+  Action: TextareaAction,
+});

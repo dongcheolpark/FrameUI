@@ -5,62 +5,47 @@
 - 컴포넌트 이름: Textarea
 - 한 줄 설명: 일반 폼 입력부터 채팅 입력창까지 대응하는 다목적 텍스트 입력 컴포넌트
 
-## 2. 해결할 문제
+## 2. 유연성 요구사항
 
-- 단순 `textarea`는 채팅 입력창처럼 자동 높이 확장(auto-resize)이나 Enter 동작 제어가 부족하다.
-- 제품마다 Enter 동작이 다르다: 어떤 화면은 줄바꿈, 어떤 화면은 전송(Submit)이어야 한다.
-- `maxLength`, 현재 글자 수, 유효성 오류 같은 입력 보조 정보가 반복 구현된다.
-- IME(한글/일본어) 조합 중 Enter 처리 오류가 자주 발생해 메시지 오발송 이슈가 생길 수 있다.
+- 단순 `textarea` 요소는 채팅방과 같은 곳에서 자동 높이 확장 기능이나 제출 이벤트를 유연하게 제어하기 불가능합니다.
+- `maxLength` 및 글자 수 검증 코드가 매번 중복 구현되는 문제를 막아야 합니다.
+- (특히 한국어/일본어) IME 조합 중 Enter 입력 시 발생하는 오동작(메시지 두 번 발송, 도중 제출)을 컴포넌트 레벨에서 차단해야 합니다.
+- 확장성을 위해 전송 버튼 등을 붙일 수 있는 UI 계층을 Compound Component Pattern을 통해 제공해야 합니다.
 
-## 3. 필요한 필수 기능
+## 3. 핵심 구현 기능
 
 1. 입력 상태 관리
-   - `value`, `defaultValue`, `onValueChange` 제공 (controlled/uncontrolled 모두 지원)
+   - Native Form의 `onChange` 이벤트와 값(value)만 바로 반환하는 `onValueChange` 양쪽을 모두 지원합니다.
+   - `value`, `defaultValue` 제공 (controlled/uncontrolled 모두 지원)
    - `disabled`, `readOnly` 지원
+   - **React 19 호환 방식:** `ref`를 props로 직접 명시하여 Headless 제어를 완벽하게 지원합니다.
 
 2. 자동 높이 확장(auto-resize)
-   - 입력 내용에 따라 높이가 자동 증가해야 한다.
-   - `minRows`, `maxRows` 옵션 제공 (예: 채팅은 min 1, max 6)
-   - `maxRows` 도달 이후에는 내부 스크롤로 전환
+   - 입력 내용에 따라 줄 단위로 높이가 증가합니다.
+   - `minRows`, `maxRows` 옵션을 통해 범위 도달을 제어합니다.
+   - `maxRows` 도달 시 `data-overflow`를 활성화하고 내부 스크롤 방식으로 제한합니다.
 
-3. Enter 동작 제어 (채팅 시나리오 핵심)
-   - `enterKeyBehavior` 옵션 제공
-   - 값: `"newline" | "submit"`
-   - `submit` 모드에서는 Enter 입력 시 `onSubmitEnter` 콜백 호출
-   - `Shift+Enter`는 항상 줄바꿈 허용
-   - IME 조합 중 Enter(`isComposing`)는 submit 동작을 발생시키면 안 됨
-   - 모바일 환경에서 기본 동작은 줄바꿈(`newline`)을 우선으로 해야 함
-   - 모바일에서 `submit` 모드 사용 시 줄바꿈 대체 수단(예: 전송 버튼) 제공을 권장
-   - 키보드 힌트를 위해 `enterKeyHint` 전달을 지원해야 함 (예: `"enter"`, `"send"`)
+3. Enter 동작 제어 및 폼 연동
+   - `enterKeyBehavior` 옵션 (`"newline"` | `"submit"`, 기본값은 `"newline"`)
+   - **Submit 모드 명세:**
+     - `enterKeyBehavior="submit"`일 때 Enter를 치면 단축 제출 이벤트를 실행합니다 (`onSubmitEnter` 콜백 호출).
+     - 주의: Native `<form>` 요소의 `submit` 이벤트를 임의로 발생시키지 않으며 오로지 독자적인 콜백만 제공합니다.
+     - `Shift+Enter` 입력은 `submit` 모드에서도 항상 강제로 줄바꿈 처리합니다.
+     - `isComposing`(IME 조합 중)이 활성화된 상태에서의 Enter는 모든 제출 동작 체인에서 차단합니다.
 
-4. 입력 제한/메타 정보
-   - `maxLength` 지원
-   - `showCount` 옵션으로 현재 글자 수/최대 글자 수 표시 가능
-   - `invalid` 상태와 `errorMessage` 연결 가능
+4. 제어 및 메타 정보
+   - `invalid` 상태 트리거 및 노출
+   - `maxLength` 초과는 브라우저 기본 방어 체계에 맞기며 그 이상의 특이 동작(글자 자르기 등)은 하지 않습니다.
 
-5. 접근성 및 스타일 확장
-   - 기본 `textarea` 의미를 유지
-   - `aria-invalid`, `aria-describedby` 연결 가능
-   - 상태 노출 속성 지원: `data-disabled`, `data-readonly`, `data-invalid`, `data-overflow`
+5. 컴파운드 계층 구조 (이번 업데이트 사항)
+   - 래퍼와 전송 슬롯 등을 쉽게 스타일링하기 위해 완전한 Compound Component 기능을 제공합니다.
+   - 기본 활용: `<Textarea />` (기존과 동일하게 단일 요소 반환)
+   - 구조적 활용: 
+     - `<Textarea.Root>` : 전체 래퍼
+     - `<Textarea.Input>` : 실제 입력 텍스트 요소
+     - `<Textarea.Action>` : 전송 버튼 부착용 슬롯
 
-## 4. 우선순위 제안 (MVP -> 확장)
+## 4. 모바일 및 제품 가이드라인 (단순 참고)
 
-MVP (이번 구현):
-
-- controlled/uncontrolled
-- auto-resize (`minRows`, `maxRows`)
-- Enter 동작 제어 (`newline`/`submit`, `Shift+Enter`, IME 예외)
-- disabled/readOnly/invalid
-
-확장 (다음 단계):
-
-- 글자 수 카운터 UI
-- 에러 메시지 슬롯/컴파운드 컴포넌트 분리
-- 멘션/해시태그 같은 리치 입력 확장 훅
-
-## 5. 모바일 동작 원칙
-
-- 모바일에서도 `enterKeyBehavior="newline"`일 때 Enter는 항상 줄바꿈으로 동작해야 한다.
-- `enterKeyBehavior="submit"`는 선택 옵션이며, 기본값은 `newline`으로 둔다.
-- 모바일은 `Shift+Enter` 사용성이 낮으므로, submit 패턴에서는 별도 전송 버튼 UI를 함께 고려한다.
-- IME 조합 중 Enter는 submit으로 처리하지 않는다.
+- 모바일 환경에서 물리 키보드 없는 단계를 고려해, `submit` 동작을 제공할 경우 필히 "전송 버튼" UI를 제공할 것을 권장합니다 (이 때 `<Textarea.Action>` 활용).
+- 키보드 표시 힌트를 위해 필요시 `<Textarea enterKeyHint="send" />` 등을 전달하면 모바일 키보드의 엔터키 모양이 이에 맞추어 변경됩니다.
