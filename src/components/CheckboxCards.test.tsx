@@ -1,192 +1,177 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
-
+import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { CheckboxCards } from "./CheckboxCards";
 
-afterEach(() => {
-  cleanup();
+afterEach(() => cleanup());
+
+const defaultOptions = [
+  { value: "a", label: "Option A", description: "Description A" },
+  { value: "b", label: "Option B" },
+  { value: "c", label: "Option C", disabled: true },
+];
+
+// --- 헬퍼 ---
+function getCheckbox(checkboxes: HTMLElement[], index: number): HTMLElement {
+  const el = checkboxes[index];
+  if (!el) throw new Error(`checkbox at index ${index} not found`);
+  return el;
+}
+
+function getItem(checkbox: HTMLElement): Element {
+  const item = checkbox.closest("[data-ui='checkbox-cards-item']");
+  if (!item) throw new Error("checkbox-cards-item not found");
+  return item;
+}
+
+// --- 기본 모드 ---
+describe("CheckboxCards (기본 모드)", () => {
+  it("options를 렌더링한다", () => {
+    render(<CheckboxCards options={defaultOptions} />);
+    expect(screen.getByText("Option A")).toBeInTheDocument();
+    expect(screen.getByText("Option B")).toBeInTheDocument();
+    expect(screen.getByText("Option C")).toBeInTheDocument();
+  });
+
+  it("description이 있는 경우 렌더링한다", () => {
+    render(<CheckboxCards options={defaultOptions} />);
+    expect(screen.getByText("Description A")).toBeInTheDocument();
+  });
+
+  it("disabled 옵션의 checkbox는 비활성화된다", () => {
+    render(<CheckboxCards options={defaultOptions} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(getCheckbox(checkboxes, 2)).toBeDisabled();
+  });
 });
 
-describe("CheckboxCards", () => {
-  it("기본 상태는 unchecked를 노출한다", () => {
-    render(
-      <CheckboxCards
-        options={[{ value: "design", label: "디자인" }]}
-      />,
-    );
-
-    const checkboxElement = screen.getByRole("checkbox", { name: "디자인" });
-
-    expect(checkboxElement.parentElement).toHaveAttribute(
-      "data-state",
-      "unchecked",
-    );
+// --- Uncontrolled ---
+describe("CheckboxCards (uncontrolled)", () => {
+  it("defaultValue로 초기 선택 상태를 설정한다", () => {
+    render(<CheckboxCards options={defaultOptions} defaultValue={["a"]} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(getCheckbox(checkboxes, 0)).toBeChecked();
+    expect(getCheckbox(checkboxes, 1)).not.toBeChecked();
   });
 
-  it("uncontrolled 모드에서 클릭 시 선택된다", async () => {
-    const user = userEvent.setup();
+  it("클릭 시 선택 상태가 토글된다", () => {
+    render(<CheckboxCards options={defaultOptions} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    const first = getCheckbox(checkboxes, 0);
+    fireEvent.click(first);
+    expect(first).toBeChecked();
+    fireEvent.click(first);
+    expect(first).not.toBeChecked();
+  });
+});
 
-    render(
-      <CheckboxCards
-        options={[{ value: "design", label: "디자인" }]}
-        defaultValue={[]}
-      />,
-    );
-
-    const checkboxElement = screen.getByRole("checkbox", { name: "디자인" });
-
-    await user.click(checkboxElement);
-
-    expect(checkboxElement.parentElement).toHaveAttribute(
-      "data-state",
-      "checked",
-    );
+// --- Controlled ---
+describe("CheckboxCards (controlled)", () => {
+  it("value prop으로 선택 상태를 제어한다", () => {
+    render(<CheckboxCards options={defaultOptions} value={["b"]} onValueChange={() => {}} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(getCheckbox(checkboxes, 0)).not.toBeChecked();
+    expect(getCheckbox(checkboxes, 1)).toBeChecked();
   });
 
-  it("다시 클릭하면 선택이 해제된다", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <CheckboxCards
-        options={[{ value: "design", label: "디자인" }]}
-        defaultValue={["design"]}
-      />,
-    );
-
-    const checkboxElement = screen.getByRole("checkbox", { name: "디자인" });
-
-    await user.click(checkboxElement);
-
-    expect(checkboxElement.parentElement).toHaveAttribute(
-      "data-state",
-      "unchecked",
-    );
-  });
-
-  it("복수 선택이 가능하다", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <CheckboxCards
-        options={[
-          { value: "design", label: "디자인" },
-          { value: "frontend", label: "프론트엔드" },
-        ]}
-      />,
-    );
-
-    const designCheckbox = screen.getByRole("checkbox", { name: "디자인" });
-    const frontendCheckbox = screen.getByRole("checkbox", {
-      name: "프론트엔드",
-    });
-
-    await user.click(designCheckbox);
-    await user.click(frontendCheckbox);
-
-    expect(designCheckbox.parentElement).toHaveAttribute(
-      "data-state",
-      "checked",
-    );
-
-    expect(frontendCheckbox.parentElement).toHaveAttribute(
-      "data-state",
-      "checked",
-    );
-  });
-
-  it("onValueChange를 호출한다", async () => {
+  it("클릭 시 onValueChange가 올바른 값으로 호출된다", () => {
     const onValueChange = vi.fn();
-    const user = userEvent.setup();
-
-    render(
-      <CheckboxCards
-        options={[{ value: "design", label: "디자인" }]}
-        onValueChange={onValueChange}
-      />,
-    );
-
-    await user.click(screen.getByRole("checkbox", { name: "디자인" }));
-
-    expect(onValueChange).toHaveBeenCalledWith(["design"]);
-    expect(onValueChange).toHaveBeenCalledTimes(1);
+    render(<CheckboxCards options={defaultOptions} value={[]} onValueChange={onValueChange} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    fireEvent.click(getCheckbox(checkboxes, 0));
+    expect(onValueChange).toHaveBeenCalledWith(["a"]);
   });
 
-  it("disabled면 상태를 바꾸지 않는다", async () => {
+  it("이미 선택된 항목 클릭 시 제거된 배열로 호출된다", () => {
     const onValueChange = vi.fn();
-    const user = userEvent.setup();
+    render(<CheckboxCards options={defaultOptions} value={["a", "b"]} onValueChange={onValueChange} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    fireEvent.click(getCheckbox(checkboxes, 0));
+    expect(onValueChange).toHaveBeenCalledWith(["b"]);
+  });
+});
 
-    render(
-      <CheckboxCards
-        options={[{ value: "design", label: "디자인" }]}
-        defaultValue={["design"]}
-        disabled
-        onValueChange={onValueChange}
-      />,
-    );
+// --- Root disabled ---
+describe("CheckboxCards (root disabled)", () => {
+  it("root disabled 시 모든 checkbox가 비활성화된다", () => {
+    render(<CheckboxCards options={defaultOptions} disabled />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    checkboxes.forEach((cb) => expect(cb).toBeDisabled());
+  });
 
-    const checkboxElement = screen.getByRole("checkbox", { name: "디자인" });
-    const labelElement = checkboxElement.parentElement;
-
-    await user.click(checkboxElement);
-
-    expect(labelElement).toHaveAttribute("data-state", "checked");
-    expect(labelElement).toHaveAttribute("data-disabled");
+  it("root disabled 시 클릭해도 onValueChange가 호출되지 않는다", () => {
+    const onValueChange = vi.fn();
+    render(<CheckboxCards options={defaultOptions} disabled value={[]} onValueChange={onValueChange} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    fireEvent.click(getCheckbox(checkboxes, 0));
     expect(onValueChange).not.toHaveBeenCalled();
   });
+});
 
-  it("개별 옵션이 disabled면 상태를 바꾸지 않는다", async () => {
-    const onValueChange = vi.fn();
-    const user = userEvent.setup();
-
+// --- Compound 모드 ---
+describe("CheckboxCards (compound 모드)", () => {
+  it("children으로 렌더링된다", () => {
     render(
-      <CheckboxCards
-        options={[
-          {
-            value: "design",
-            label: "디자인",
-            disabled: true,
-          },
-        ]}
-        onValueChange={onValueChange}
-      />,
+      <CheckboxCards defaultValue={[]}>
+        <CheckboxCards.Item value="x">
+          <CheckboxCards.Indicator />
+          <CheckboxCards.Label>Custom Label</CheckboxCards.Label>
+        </CheckboxCards.Item>
+      </CheckboxCards>
     );
-
-    const checkboxElement = screen.getByRole("checkbox", { name: "디자인" });
-    const labelElement = checkboxElement.parentElement;
-
-    await user.click(checkboxElement);
-
-    expect(labelElement).toHaveAttribute("data-state", "unchecked");
-    expect(labelElement).toHaveAttribute("data-disabled");
-    expect(onValueChange).not.toHaveBeenCalled();
+    expect(screen.getByText("Custom Label")).toBeInTheDocument();
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
   });
 
-  it("controlled 모드에서 value를 기준으로 상태를 반영한다", () => {
+  it("Root 서브 컴포넌트로도 렌더링된다", () => {
     render(
-      <CheckboxCards
-        options={[
-          { value: "design", label: "디자인" },
-          { value: "frontend", label: "프론트엔드" },
-        ]}
-        value={["frontend"]}
-        onValueChange={() => {}}
-      />,
+      <CheckboxCards.Root defaultValue={[]}>
+        <CheckboxCards.Item value="x">
+          <CheckboxCards.Indicator />
+          <CheckboxCards.Label>Custom Label</CheckboxCards.Label>
+        </CheckboxCards.Item>
+      </CheckboxCards.Root>
     );
+    expect(screen.getByText("Custom Label")).toBeInTheDocument();
+  });
 
-    const designCheckbox = screen.getByRole("checkbox", { name: "디자인" });
-    const frontendCheckbox = screen.getByRole("checkbox", {
-      name: "프론트엔드",
-    });
+  it("Item 외부에서 Indicator 사용 시 에러를 던진다", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      render(
+        <CheckboxCards defaultValue={[]}>
+          <CheckboxCards.Indicator />
+        </CheckboxCards>
+      )
+    ).toThrow();
+    consoleError.mockRestore();
+  });
 
-    expect(designCheckbox.parentElement).toHaveAttribute(
-      "data-state",
-      "unchecked",
+  it("Description이 렌더링된다", () => {
+    render(
+      <CheckboxCards defaultValue={[]}>
+        <CheckboxCards.Item value="x">
+          <CheckboxCards.Indicator />
+          <CheckboxCards.Label>Label</CheckboxCards.Label>
+          <CheckboxCards.Description>설명 텍스트</CheckboxCards.Description>
+        </CheckboxCards.Item>
+      </CheckboxCards>
     );
+    expect(screen.getByText("설명 텍스트")).toBeInTheDocument();
+  });
+});
 
-    expect(frontendCheckbox.parentElement).toHaveAttribute(
-      "data-state",
-      "checked",
-    );
+// --- data attributes ---
+describe("CheckboxCards (data attributes)", () => {
+  it("선택된 item에 data-checked 속성이 붙는다", () => {
+    render(<CheckboxCards options={defaultOptions} defaultValue={["a"]} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(getItem(getCheckbox(checkboxes, 0))).toHaveAttribute("data-checked");
+    expect(getItem(getCheckbox(checkboxes, 1))).not.toHaveAttribute("data-checked");
+  });
+
+  it("disabled item에 data-disabled 속성이 붙는다", () => {
+    render(<CheckboxCards options={defaultOptions} />);
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(getItem(getCheckbox(checkboxes, 2))).toHaveAttribute("data-disabled");
   });
 });

@@ -91,61 +91,67 @@ export function App() {
           </div>
         </div>
 
+        <hr />
+
         {/* CheckboxCards 예시 */}
         <div className="component-section">
           <h2>CheckboxCards Component</h2>
 
-          <CheckboxCards
-            value={selectedRoles}
-            onValueChange={setSelectedRoles}
-            options={[
-              {
-                value: "design",
-                label: "Design",
-                description: "UI 작업",
-              },
-              {
-                value: "frontend",
-                label: "Frontend",
-                description: "React 개발",
-              },
-              {
-                value: "backend",
-                label: "Backend",
-                description: "API 개발",
-              },
-            ]}
-          />
-
-          <div className="status">
-            선택된 값: {selectedRoles.join(", ") || "없음"}
+          <div className="component-example">
+            <h3>1. Controlled</h3>
+            <CheckboxCards
+              value={selectedRoles}
+              onValueChange={setSelectedRoles}
+              options={[
+                { value: "design", label: "Design", description: "UI 작업" },
+                { value: "frontend", label: "Frontend", description: "React 개발" },
+                { value: "backend", label: "Backend", description: "API 개발" },
+              ]}
+            />
+            <div className="status">
+              선택된 값: {selectedRoles.join(", ") || "없음"}
+            </div>
           </div>
 
-          <div style={{ height: 16 }} />
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>2. Uncontrolled</h3>
+            <CheckboxCards
+              defaultValue={["basic"]}
+              options={[
+                { value: "basic", label: "Basic" },
+                { value: "pro", label: "Pro" },
+                { value: "team", label: "Team" },
+              ]}
+            />
+          </div>
 
-          <CheckboxCards
-            orientation="horizontal"
-            defaultValue={["basic"]}
-            options={[
-              { value: "basic", label: "Basic" },
-              { value: "pro", label: "Pro" },
-              { value: "team", label: "Team" },
-            ]}
-          />
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>3. Disabled</h3>
+            <CheckboxCards
+              disabled
+              defaultValue={["design"]}
+              options={[
+                { value: "design", label: "Disabled option" },
+              ]}
+            />
+          </div>
 
-          <div style={{ height: 16 }} />
-
-          <CheckboxCards
-            disabled
-            defaultValue={["design"]}
-            options={[
-              { value: "design", label: "Disabled option" },
-            ]}
-          />
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>4. Compound 패턴</h3>
+            <CheckboxCards defaultValue={["custom"]}>
+              <CheckboxCards.Item value="custom">
+                <CheckboxCards.Indicator />
+                <div>
+                  <CheckboxCards.Label>Custom Layout</CheckboxCards.Label>
+                  <CheckboxCards.Description>자유로운 구조로 작성</CheckboxCards.Description>
+                </div>
+              </CheckboxCards.Item>
+            </CheckboxCards>
+          </div>
         </div>
 
         <hr />
-
+        
         {/* Tabs 예시 */}
         <div className="component-section">
           <h2>Tabs Component</h2>
