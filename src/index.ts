@@ -6,3 +6,5 @@ export { Switch } from "./components/Switch";
 export type { SwitchProps } from "./components/Switch";
 export { CheckboxCards } from "./components/CheckboxCards";
 export type { CheckboxCardsProps, CheckboxCardOption } from "./components/CheckboxCards";
+export { Textarea } from "./components/Textarea";
+export type { TextareaProps } from "./components/Textarea";
