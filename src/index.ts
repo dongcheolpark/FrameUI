@@ -8,3 +8,5 @@ export { Textarea } from "./components/Textarea";
 export type { TextareaProps } from "./components/Textarea";
 export { CheckboxCards } from "./components/CheckboxCards";
 export type { CheckboxCardsProps, CheckboxCardOption } from "./components/CheckboxCards";
+export { Tabs } from "./components/Tabs";
+export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from "./components/Tabs";
