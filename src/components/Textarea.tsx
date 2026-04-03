@@ -29,6 +29,12 @@ export interface TextareaActionProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
+export interface TextareaProps extends TextareaInputProps {
+  actionSlot?: ReactNode;
+  rootProps?: TextareaRootProps;
+  ref?: React.Ref<HTMLTextAreaElement>;
+}
+
 // --- Context ---
 const TextareaContext = createContext<{
   isOverflow: boolean;
@@ -178,29 +184,26 @@ export function TextareaAction({ children, className, ...props }: TextareaAction
 }
 
 // Default Component for backward compatibility and quick usage
-export function TextareaPrimitive({
-  actionSlot,
-  rootProps,
-  ...inputProps
-}: TextareaInputProps & { 
-  actionSlot?: ReactNode; 
-  rootProps?: TextareaRootProps;
-  ref?: React.Ref<HTMLTextAreaElement>;
-}) {
-  if (actionSlot) {
-    return (
-      <TextareaRoot {...rootProps}>
-        <TextareaInput {...inputProps} />
-        <TextareaAction>{actionSlot}</TextareaAction>
-      </TextareaRoot>
-    );
+export const Textarea = Object.assign(
+  function Textarea({
+    actionSlot,
+    rootProps,
+    ...inputProps
+  }: TextareaProps) {
+    if (actionSlot) {
+      return (
+        <TextareaRoot {...rootProps}>
+          <TextareaInput {...inputProps} />
+          <TextareaAction>{actionSlot}</TextareaAction>
+        </TextareaRoot>
+      );
+    }
+
+    return <TextareaInput {...inputProps} />;
+  },
+  {
+    Root: TextareaRoot,
+    Input: TextareaInput,
+    Action: TextareaAction,
   }
-
-  return <TextareaInput {...inputProps} />;
-}
-
-export const Textarea = Object.assign(TextareaPrimitive, {
-  Root: TextareaRoot,
-  Input: TextareaInput,
-  Action: TextareaAction,
-});
+);

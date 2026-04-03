@@ -1,4 +1,5 @@
 @import "./components/Switch.css";
+@import "./components/Textarea.css";
 
 * {
   margin: 0;

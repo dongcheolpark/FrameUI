@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Switch, CheckboxCards, FRAME_UI_VERSION } from "FrameUI";
+import { Button, Switch, Textarea, FRAME_UI_VERSION } from "FrameUI";
 import "./App.css";
 
 export function App() {
@@ -63,57 +63,32 @@ export function App() {
 
         <hr />
 
-        {/* CheckboxCards 예시 */}
+        {/* Textarea 예시 */}
         <div className="component-section">
-          <h2>CheckboxCards Component</h2>
+          <h2>Textarea Component</h2>
 
-          <CheckboxCards
-            value={selectedRoles}
-            onValueChange={setSelectedRoles}
-            options={[
-              {
-                value: "design",
-                label: "Design",
-                description: "UI 작업",
-              },
-              {
-                value: "frontend",
-                label: "Frontend",
-                description: "React 개발",
-              },
-              {
-                value: "backend",
-                label: "Backend",
-                description: "API 개발",
-              },
-            ]}
-          />
-
-          <div className="status">
-            선택된 값: {selectedRoles.join(", ") || "없음"}
+          <div className="component-example" style={{ marginBottom: "24px" }}>
+            <h3>1. 단축형(Shorthand) 사용</h3>
+            <Textarea
+              placeholder="댓글을 남겨주세요..."
+              minRows={2}
+              maxRows={4}
+              actionSlot={<Button label="작성" />}
+            />
           </div>
 
-          <div style={{ height: 16 }} />
-
-          <CheckboxCards
-            orientation="horizontal"
-            defaultValue={["basic"]}
-            options={[
-              { value: "basic", label: "Basic" },
-              { value: "pro", label: "Pro" },
-              { value: "team", label: "Team" },
-            ]}
-          />
-
-          <div style={{ height: 16 }} />
-
-          <CheckboxCards
-            disabled
-            defaultValue={["design"]}
-            options={[
-              { value: "design", label: "Disabled option" },
-            ]}
-          />
+          <div className="component-example">
+            <h3>2. Compound 패턴 사용 (유연한 구조)</h3>
+            <Textarea.Root>
+              <Textarea.Input placeholder="상세 내용을 입력하세요." minRows={4} />
+              <Textarea.Action>
+                <div style={{ display: "flex", gap: "8px", width: "100%", justifyContent: "flex-end" }}>
+                  <Button label="임시저장" />
+                  <Button label="확인" />
+                </div>
+              </Textarea.Action>
+            </Textarea.Root>
+          </div>
         </div>
       </section>
     </main>
