@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Switch, FRAME_UI_VERSION } from "FrameUI";
+import { Button, Switch, Textarea, FRAME_UI_VERSION } from "FrameUI";
 import "./App.css";
 
 export function App() {
@@ -57,6 +57,36 @@ export function App() {
             <label>비활성화된 스위치</label>
             <Switch defaultChecked={true} disabled aria-label="비활성화 예시" />
             <span className="status">비활성화됨</span>
+          </div>
+        </div>
+
+        <hr />
+
+        {/* Textarea 예시 */}
+        <div className="component-section">
+          <h2>Textarea Component</h2>
+
+          <div className="component-example" style={{ marginBottom: "24px" }}>
+            <h3>1. 단축형(Shorthand) 사용</h3>
+            <Textarea
+              placeholder="댓글을 남겨주세요..."
+              minRows={2}
+              maxRows={4}
+              actionSlot={<Button label="작성" />}
+            />
+          </div>
+
+          <div className="component-example">
+            <h3>2. Compound 패턴 사용 (유연한 구조)</h3>
+            <Textarea.Root>
+              <Textarea.Input placeholder="상세 내용을 입력하세요." minRows={4} />
+              <Textarea.Action>
+                <div style={{ display: "flex", gap: "8px", width: "100%", justifyContent: "flex-end" }}>
+                  <Button label="임시저장" />
+                  <Button label="확인" />
+                </div>
+              </Textarea.Action>
+            </Textarea.Root>
           </div>
         </div>
       </section>
