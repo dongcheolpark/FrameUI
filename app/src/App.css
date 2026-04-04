@@ -74,3 +74,28 @@ hr {
   font-size: 14px;
   color: #999;
 }
+
+[data-component="checkbox-cards"] {
+  display: grid;
+  gap: 12px;
+}
+
+[data-component="checkbox-cards"][data-orientation="horizontal"] {
+  grid-auto-flow: column;
+}
+
+[data-component="checkbox-card"] {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+  background: white;
+}
+
+[data-component="checkbox-card"][data-state="checked"] {
+  border-color: #4f46e5;
+  background: #eef2ff;
+}
+
+[data-component="checkbox-card"][data-disabled] {
+  opacity: 0.5;
+}

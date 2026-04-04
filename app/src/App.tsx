@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Button, Switch, Textarea, FRAME_UI_VERSION } from "FrameUI";
+import { Button, Switch, Textarea, CheckboxCards, FRAME_UI_VERSION } from "FrameUI";
 import "./App.css";
 
 export function App() {
   const [count, setCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>(["frontend"]);
 
   return (
     <main className="page">
@@ -88,6 +89,59 @@ export function App() {
               </Textarea.Action>
             </Textarea.Root>
           </div>
+        </div>
+
+        {/* CheckboxCards 예시 */}
+        <div className="component-section">
+          <h2>CheckboxCards Component</h2>
+
+          <CheckboxCards
+            value={selectedRoles}
+            onValueChange={setSelectedRoles}
+            options={[
+              {
+                value: "design",
+                label: "Design",
+                description: "UI 작업",
+              },
+              {
+                value: "frontend",
+                label: "Frontend",
+                description: "React 개발",
+              },
+              {
+                value: "backend",
+                label: "Backend",
+                description: "API 개발",
+              },
+            ]}
+          />
+
+          <div className="status">
+            선택된 값: {selectedRoles.join(", ") || "없음"}
+          </div>
+
+          <div style={{ height: 16 }} />
+
+          <CheckboxCards
+            orientation="horizontal"
+            defaultValue={["basic"]}
+            options={[
+              { value: "basic", label: "Basic" },
+              { value: "pro", label: "Pro" },
+              { value: "team", label: "Team" },
+            ]}
+          />
+
+          <div style={{ height: 16 }} />
+
+          <CheckboxCards
+            disabled
+            defaultValue={["design"]}
+            options={[
+              { value: "design", label: "Disabled option" },
+            ]}
+          />
         </div>
       </section>
     </main>
