@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Switch, Textarea, CheckboxCards, FRAME_UI_VERSION } from "FrameUI";
+import { Button, Switch, Textarea, CheckboxCards, Tabs, FRAME_UI_VERSION } from "FrameUI";
 import "./App.css";
 
 export function App() {
@@ -142,6 +142,48 @@ export function App() {
               { value: "design", label: "Disabled option" },
             ]}
           />
+        </div>
+
+        <hr />
+
+        {/* Tabs 예시 */}
+        <div className="component-section">
+          <h2>Tabs Component</h2>
+          
+          <Tabs.Root defaultValue="account" className="tabs-root">
+            <Tabs.List className="tabs-list">
+              <Tabs.Trigger value="account" className="tabs-trigger">계정 관리</Tabs.Trigger>
+              <Tabs.Trigger value="password" className="tabs-trigger">보안 및 비밀번호</Tabs.Trigger>
+              <Tabs.Trigger value="billing" className="tabs-trigger" disabled>결제 (준비중)</Tabs.Trigger>
+            </Tabs.List>
+            
+            <Tabs.Content value="account" className="tabs-content">
+              <h3>개인 정보</h3>
+              <p style={{ marginBottom: "16px" }}>계정의 기본 프로필 정보를 업데이트하세요.</p>
+              <Textarea
+                placeholder="간단한 자기소개를 작성해주세요." 
+                minRows={2} 
+                maxRows={4} 
+              />
+              <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
+                <Button label="변경 사항 저장" />
+              </div>
+            </Tabs.Content>
+
+            <Tabs.Content value="password" className="tabs-content">
+              <h3>로그인 및 보안</h3>
+              <p style={{ marginBottom: "16px" }}>마지막 비밀번호 변경일: 최근 (2026.04.01)</p>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <Button label="비밀번호 변경" />
+                <Button label="2단계 인증 로그아웃" style={{ background: "#ef4444" }} />
+              </div>
+            </Tabs.Content>
+
+            <Tabs.Content value="billing" className="tabs-content">
+              {/* Disabled tab contents normally won't be accessed, but strictly valid structure */}
+              <h3>결제 수단 관리</h3>
+            </Tabs.Content>
+          </Tabs.Root>
         </div>
       </section>
     </main>
