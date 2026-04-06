@@ -1,11 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
-import type { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
+import type {
+  HTMLAttributes,
+  ReactNode,
+  ChangeEvent,
+} from "react";
 
-type NativeInputProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "checked" | "defaultChecked" | "onChange" | "type" | "value"
->;
-
+// --- Types ---
 export interface CheckboxCardOption {
   value: string;
   label: ReactNode;
@@ -13,101 +19,208 @@ export interface CheckboxCardOption {
   disabled?: boolean;
 }
 
-export interface CheckboxCardsProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
-  options: CheckboxCardOption[];
+export interface CheckboxCardsRootProps extends HTMLAttributes<HTMLDivElement> {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   disabled?: boolean;
-  name?: string;
-  required?: boolean;
-  orientation?: "vertical" | "horizontal";
-  inputProps?: NativeInputProps;
+  invalid?: boolean;
+  children?: ReactNode;
 }
 
-export function CheckboxCards({
-  options,
+export interface CheckboxCardsItemProps extends HTMLAttributes<HTMLLabelElement> {
+  value: string;
+  disabled?: boolean | undefined;
+  children?: ReactNode;
+}
+
+export interface CheckboxCardsIndicatorProps extends HTMLAttributes<HTMLInputElement> {}
+
+export interface CheckboxCardsLabelProps extends HTMLAttributes<HTMLSpanElement> {
+  children?: ReactNode;
+}
+
+export interface CheckboxCardsDescriptionProps extends HTMLAttributes<HTMLSpanElement> {
+  children?: ReactNode;
+}
+
+export interface CheckboxCardsProps extends CheckboxCardsRootProps {
+  options?: CheckboxCardOption[];
+}
+
+// --- Context ---
+interface CheckboxCardsContextValue {
+  selectedValues: string[];
+  toggleValue: (value: string) => void;
+  disabled: boolean;
+  invalid: boolean;
+}
+
+const CheckboxCardsContext = createContext<CheckboxCardsContextValue | null>(null);
+
+const CheckboxCardsItemContext = createContext<{
+  value: string;
+  checked: boolean;
+  disabled: boolean;
+} | null>(null);
+
+export function useCheckboxCardsContext() {
+  return useContext(CheckboxCardsContext);
+}
+
+export function useCheckboxCardsItemContext() {
+  return useContext(CheckboxCardsItemContext);
+}
+
+// --- Components ---
+export function CheckboxCardsRoot({
   value,
   defaultValue = [],
   onValueChange,
   disabled = false,
-  name,
-  required = false,
-  orientation = "vertical",
-  inputProps,
+  invalid = false,
+  children,
+  style,
   ...props
-}: CheckboxCardsProps) {
-  const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(
-    defaultValue,
-  );
-
+}: CheckboxCardsRootProps) {
+  const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(defaultValue);
   const isControlled = value !== undefined;
 
-  const currentValue = useMemo(
+  const selectedValues = useMemo(
     () => (isControlled ? value : uncontrolledValue),
-    [isControlled, uncontrolledValue, value],
+    [isControlled, value, uncontrolledValue]
   );
 
   const toggleValue = useCallback(
-    (optionValue: string, optionDisabled?: boolean) => {
-      if (disabled || optionDisabled) {
-        return;
-      }
-
-      const nextValue = currentValue.includes(optionValue)
-        ? currentValue.filter((item) => item !== optionValue)
-        : [...currentValue, optionValue];
+    (itemValue: string) => {
+      const next = selectedValues.includes(itemValue)
+        ? selectedValues.filter((v) => v !== itemValue)
+        : [...selectedValues, itemValue];
 
       if (!isControlled) {
-        setUncontrolledValue(nextValue);
+        setUncontrolledValue(next);
       }
-
-      onValueChange?.(nextValue);
+      onValueChange?.(next);
     },
-    [currentValue, disabled, isControlled, onValueChange],
+    [selectedValues, isControlled, onValueChange]
   );
 
   return (
-    <div
-      data-component="checkbox-cards"
-      data-orientation={orientation}
-      data-disabled={disabled ? "" : undefined}
-      {...props}
-    >
-      {options.map((option) => {
-        const checked = currentValue.includes(option.value);
-        const optionDisabled = disabled || option.disabled;
-
-        return (
-          <label
-            key={option.value}
-            data-component="checkbox-card"
-            data-state={checked ? "checked" : "unchecked"}
-            data-disabled={optionDisabled ? "" : undefined}
-            style={{ cursor: optionDisabled ? "not-allowed" : "pointer" }}
-          >
-            <input
-              type="checkbox"
-              name={name}
-              value={option.value}
-              checked={checked}
-              disabled={optionDisabled}
-              required={required}
-              onChange={() => toggleValue(option.value, option.disabled)}
-              style={{
-                position: "absolute",
-                left: "-9999px",
-              }}
-              {...inputProps}
-            />
-            <div>
-              <div>{option.label}</div>
-              {option.description ? <div>{option.description}</div> : null}
-            </div>
-          </label>
-        );
-      })}
-    </div>
+    <CheckboxCardsContext.Provider value={{ selectedValues, toggleValue, disabled, invalid }}>
+      <div
+        data-ui="checkbox-cards"
+        data-disabled={disabled ? "" : undefined}
+        data-invalid={invalid ? "" : undefined}
+        style={{ display: "flex", flexDirection: "column", gap: "8px", ...style }}
+        {...props}
+      >
+        {children}
+      </div>
+    </CheckboxCardsContext.Provider>
   );
 }
+
+export function CheckboxCardsItem({
+  value,
+  disabled: itemDisabled = false,
+  children,
+  style,
+  ...props
+}: CheckboxCardsItemProps) {
+  const ctx = useContext(CheckboxCardsContext);
+  if (!ctx) throw new Error("CheckboxCardsItem must be used inside CheckboxCardsRoot");
+
+  const { selectedValues, toggleValue, disabled: rootDisabled } = ctx;
+  const disabled = rootDisabled || itemDisabled;
+  const checked = selectedValues.includes(value);
+
+  return (
+    <CheckboxCardsItemContext.Provider value={{ value, checked, disabled }}>
+      <label
+        data-ui="checkbox-cards-item"
+        data-checked={checked ? "" : undefined}
+        data-disabled={disabled ? "" : undefined}
+        style={{ display: "flex", alignItems: "flex-start", gap: "8px", cursor: disabled ? "not-allowed" : "pointer", ...style }}
+        {...props}
+      >
+        {children}
+      </label>
+    </CheckboxCardsItemContext.Provider>
+  );
+}
+
+export function CheckboxCardsIndicator({
+  style,
+  ...props
+}: CheckboxCardsIndicatorProps) {
+  const ctx = useContext(CheckboxCardsContext);
+  const itemCtx = useContext(CheckboxCardsItemContext);
+  if (!ctx || !itemCtx) throw new Error("CheckboxCardsIndicator must be used inside CheckboxCardsItem");
+
+  const { toggleValue } = ctx;
+  const { value, checked, disabled } = itemCtx;
+
+  const handleChange = (_e: ChangeEvent<HTMLInputElement>) => {
+    if (!disabled) toggleValue(value);
+  };
+
+  return (
+    <input
+      type="checkbox"
+      checked={checked}
+      disabled={disabled}
+      onChange={handleChange}
+      data-ui="checkbox-cards-indicator"
+      style={{ flexShrink: 0, ...style }}
+      {...props}
+    />
+  );
+}
+
+export function CheckboxCardsLabel({ children, ...props }: CheckboxCardsLabelProps) {
+  return (
+    <span data-ui="checkbox-cards-label" {...props}>
+      {children}
+    </span>
+  );
+}
+
+export function CheckboxCardsDescription({ children, ...props }: CheckboxCardsDescriptionProps) {
+  return (
+    <span data-ui="checkbox-cards-description" {...props}>
+      {children}
+    </span>
+  );
+}
+
+// --- Default Component ---
+export const CheckboxCards = Object.assign(
+  function CheckboxCards({ options, children, ...rootProps }: CheckboxCardsProps) {
+    if (options) {
+      return (
+        <CheckboxCardsRoot {...rootProps}>
+          {options.map((option) => (
+            <CheckboxCardsItem key={option.value} value={option.value} disabled={option.disabled}>
+              <CheckboxCardsIndicator />
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <CheckboxCardsLabel>{option.label}</CheckboxCardsLabel>
+                {option.description && (
+                  <CheckboxCardsDescription>{option.description}</CheckboxCardsDescription>
+                )}
+              </div>
+            </CheckboxCardsItem>
+          ))}
+        </CheckboxCardsRoot>
+      );
+    }
+
+    return <CheckboxCardsRoot {...rootProps}>{children}</CheckboxCardsRoot>;
+  },
+  {
+    Root: CheckboxCardsRoot,
+    Item: CheckboxCardsItem,
+    Indicator: CheckboxCardsIndicator,
+    Label: CheckboxCardsLabel,
+    Description: CheckboxCardsDescription,
+  }
+);
