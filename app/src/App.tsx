@@ -1,12 +1,24 @@
 import { useState } from "react";
-import { Button, Switch, Textarea, CheckboxCards, Tabs, FRAME_UI_VERSION } from "FrameUI";
-import "./App.css";
+import { 
+  Button, 
+  Switch, 
+  Textarea, 
+  CheckboxCards, 
+  Tabs, 
+  Modal, 
+  Popup,
+  FRAME_UI_VERSION 
+} from "FrameUI";
 
+import "./App.css";
 export function App() {
   const [count, setCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const [selectedRoles, setSelectedRoles] = useState<string[]>(["frontend"]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
     <main className="page">
@@ -16,7 +28,6 @@ export function App() {
 
         <hr />
 
-        {/* Button 예시 */}
         <div className="component-section">
           <h2>Button Component</h2>
           <p>버튼 클릭 수: {count}</p>
@@ -28,10 +39,18 @@ export function App() {
 
         <hr />
 
-        {/* Switch 예시 */}
+        <div className="component-section">
+          <h2>Modal & Popup</h2>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <Button label="모달 열기" onClick={() => setIsModalOpen(true)} />
+            <Button label="팝업 띄우기" onClick={() => setIsPopupOpen(true)} />
+          </div>
+        </div>
+
+        <hr />
+
         <div className="component-section">
           <h2>Switch Component</h2>
-
           <div className="switch-example">
             <label>다크모드</label>
             <Switch
@@ -63,10 +82,8 @@ export function App() {
 
         <hr />
 
-        {/* Textarea 예시 */}
         <div className="component-section">
           <h2>Textarea Component</h2>
-
           <div className="component-example" style={{ marginBottom: "24px" }}>
             <h3>1. 단축형(Shorthand) 사용</h3>
             <Textarea
@@ -78,7 +95,7 @@ export function App() {
           </div>
 
           <div className="component-example">
-            <h3>2. Compound 패턴 사용 (유연한 구조)</h3>
+            <h3>2. Compound 패턴 사용</h3>
             <Textarea.Root>
               <Textarea.Input placeholder="상세 내용을 입력하세요." minRows={4} />
               <Textarea.Action>
@@ -93,10 +110,8 @@ export function App() {
 
         <hr />
 
-        {/* CheckboxCards 예시 */}
         <div className="component-section">
           <h2>CheckboxCards Component</h2>
-
           <div className="component-example">
             <h3>1. Controlled</h3>
             <CheckboxCards
@@ -130,9 +145,7 @@ export function App() {
             <CheckboxCards
               disabled
               defaultValue={["design"]}
-              options={[
-                { value: "design", label: "Disabled option" },
-              ]}
+              options={[{ value: "design", label: "Disabled option" }]}
             />
           </div>
 
@@ -151,26 +164,20 @@ export function App() {
         </div>
 
         <hr />
-        
-        {/* Tabs 예시 */}
+
         <div className="component-section">
           <h2>Tabs Component</h2>
-          
           <Tabs.Root defaultValue="account" className="tabs-root">
             <Tabs.List className="tabs-list">
               <Tabs.Trigger value="account" className="tabs-trigger">계정 관리</Tabs.Trigger>
               <Tabs.Trigger value="password" className="tabs-trigger">보안 및 비밀번호</Tabs.Trigger>
               <Tabs.Trigger value="billing" className="tabs-trigger" disabled>결제 (준비중)</Tabs.Trigger>
             </Tabs.List>
-            
+
             <Tabs.Content value="account" className="tabs-content">
               <h3>개인 정보</h3>
               <p style={{ marginBottom: "16px" }}>계정의 기본 프로필 정보를 업데이트하세요.</p>
-              <Textarea
-                placeholder="간단한 자기소개를 작성해주세요." 
-                minRows={2} 
-                maxRows={4} 
-              />
+              <Textarea placeholder="간단한 자기소개를 작성해주세요." minRows={2} maxRows={4} />
               <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
                 <Button label="변경 사항 저장" />
               </div>
@@ -186,12 +193,33 @@ export function App() {
             </Tabs.Content>
 
             <Tabs.Content value="billing" className="tabs-content">
-              {/* Disabled tab contents normally won't be accessed, but strictly valid structure */}
               <h3>결제 수단 관리</h3>
             </Tabs.Content>
           </Tabs.Root>
         </div>
       </section>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="상세 정보"
+        description="이것은 모달의 상세 내용입니다."
+        footerSlot={
+          <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+            <Button label="취소" onClick={() => setIsModalOpen(false)} />
+            <Button label="확인" onClick={() => setIsModalOpen(false)} />
+          </div>
+        }
+      >
+        <p>모달 본문 내용이 여기에 들어갑니다.</p>
+      </Modal>
+
+      <Popup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        message="성공적으로 처리되었습니다!"
+        type="success"
+      />
     </main>
   );
 }
