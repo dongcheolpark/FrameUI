@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Switch, Textarea, CheckboxCards, Tabs, FRAME_UI_VERSION } from "FrameUI";
+import { Button, Switch, Textarea, CheckboxCards, Tabs, RadioCards, FRAME_UI_VERSION } from "FrameUI";
 import "./App.css";
 
 export function App() {
@@ -7,6 +7,7 @@ export function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const [selectedRoles, setSelectedRoles] = useState<string[]>(["frontend"]);
+  const [selectedFruit, setSelectedFruit] = useState("apple");
 
   return (
     <main className="page">
@@ -190,6 +191,86 @@ export function App() {
               <h3>결제 수단 관리</h3>
             </Tabs.Content>
           </Tabs.Root>
+        </div>
+
+        <hr />
+
+        {/* RadioCards 예시 */}
+        <div className="component-section">
+          <h2>RadioCards Component</h2>
+
+          <div className="component-example">
+            <h3>1. Controlled</h3>
+            <RadioCards
+              value={selectedFruit}
+              onValueChange={setSelectedFruit}
+              name="fruit"
+              options={[
+                { value: "apple", label: "Apple", description: "crisp and sweet" },
+                { value: "banana", label: "Banana", description: "tropical yellow" },
+                { value: "grape", label: "Grape", description: "small and juicy" },
+              ]}
+            />
+            <div className="status">선택된 값: {selectedFruit}</div>
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>2. Uncontrolled</h3>
+            <RadioCards
+              defaultValue="banana"
+              name="fruit-uncontrolled"
+              options={[
+                { value: "apple", label: "Apple" },
+                { value: "banana", label: "Banana" },
+                { value: "grape", label: "Grape" },
+              ]}
+            />
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>3. Disabled (root)</h3>
+            <RadioCards
+              disabled
+              defaultValue="apple"
+              name="fruit-disabled"
+              options={[
+                { value: "apple", label: "Apple" },
+                { value: "banana", label: "Banana" },
+              ]}
+            />
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>4. Disabled item</h3>
+            <RadioCards
+              defaultValue="apple"
+              name="fruit-disabled-item"
+              options={[
+                { value: "apple", label: "Apple" },
+                { value: "banana", label: "Banana", disabled: true },
+              ]}
+            />
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>5. Compound 패턴</h3>
+            <RadioCards defaultValue="apple" name="fruit-compound">
+              <RadioCards.Item value="apple">
+                <RadioCards.Indicator />
+                <div>
+                  <RadioCards.Label>Apple</RadioCards.Label>
+                  <RadioCards.Description>crisp and sweet</RadioCards.Description>
+                </div>
+              </RadioCards.Item>
+              <RadioCards.Item value="banana">
+                <RadioCards.Indicator />
+                <div>
+                  <RadioCards.Label>Banana</RadioCards.Label>
+                  <RadioCards.Description>tropical yellow</RadioCards.Description>
+                </div>
+              </RadioCards.Item>
+            </RadioCards>
+          </div>
         </div>
       </section>
     </main>
