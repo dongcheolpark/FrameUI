@@ -1,0 +1,41 @@
+/* src/components/CheckboxCard/CheckboxCard.css */
+
+.checkbox-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: white;
+  width: 100%;
+}
+
+/* 마우스 호버 효과 */
+.checkbox-card:hover {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+
+.checkbox-card.is-selected {
+  border-color: #3b82f6; 
+  background-color: #eff6ff;
+}
+
+.checkbox-card-content {
+  flex: 1;
+}
+
+.checkbox-card-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #111827;
+}
+
+.checkbox-card-description {
+  font-size: 14px;
+  color: #6b7280;
+}
