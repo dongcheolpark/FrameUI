@@ -171,18 +171,18 @@ hr {
   border-color: #dc2626;
   background-color: #fee2e2;
 }
-  modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); 
-  display: flex;
+  .modal-overlay {
+  position: fixed !important; 
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.7); 
+  display: flex !important;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px); 
+  z-index: 999999; 
 }
 
 .modal-content {
@@ -255,11 +255,10 @@ hr {
   justify-content: space-between;
   align-items: center;
   z-index: 2000;
-  border-left: 6px solid #3182ce; /* Төрлөөс хамаарч өнгө нь солигдоно */
+  border-left: 6px solid #3182ce; 
   animation: popup-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Поп-ап төрлүүдийн өнгө */
 .popup-success { border-left-color: #48bb78; }
 .popup-error { border-left-color: #f56565; }
 .popup-info { border-left-color: #4299e1; }
