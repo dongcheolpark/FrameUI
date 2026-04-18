@@ -97,18 +97,7 @@ describe("Textarea", () => {
   });
 
   it("disabled/readOnly/invalid 상태를 data 속성으로 노출한다", () => {
-<<<<<<< HEAD
     render(<Textarea aria-label="상태" disabled readOnly invalid />);
-=======
-    render(
-      <Textarea
-        aria-label="상태"
-        disabled
-        readOnly
-        invalid
-      />,
-    );
->>>>>>> 0ec6d5f (add component)
 
     const textarea = screen.getByRole("textbox", { name: "상태" });
 
@@ -117,7 +106,6 @@ describe("Textarea", () => {
     expect(textarea).toHaveAttribute("data-invalid");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
   });
-<<<<<<< HEAD
 
   describe("Compound Components & Slots", () => {
     it("actionSlot을 제공하면 확장된 Wrapper와 Action 슬롯을 렌더링한다", () => {
@@ -150,6 +138,4 @@ describe("Textarea", () => {
       expect(screen.getByRole("button", { name: "확인버튼" })).toBeInTheDocument();
     });
   });
-=======
->>>>>>> 0ec6d5f (add component)
 });
