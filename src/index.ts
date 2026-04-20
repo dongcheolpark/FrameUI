@@ -38,3 +38,30 @@ export type {
   RadioCardsDescriptionProps,
   RadioCardOption,
 } from "./components/RadioCards";
+
+export { Carousel } from "./components/Carousel";
+export type {
+  CarouselOrientation,
+  CarouselAutoplay,
+  CarouselRootProps,
+  CarouselViewportProps,
+  CarouselTrackProps,
+  CarouselSlideProps,
+  CarouselPrevTriggerProps,
+  CarouselNextTriggerProps,
+  CarouselIndicatorProps,
+} from "./components/Carousel";
+
+export { FileDropzone } from "./components/FileDropzone";
+export type {
+  FileDropzoneState,
+  FileDropzoneRejectReason,
+  FileDropzoneRejection,
+  FileDropzoneRootProps,
+  FileDropzoneTriggerProps,
+  FileDropzoneInputProps,
+  FileDropzoneZoneProps,
+  FileDropzoneFileListProps,
+  FileDropzoneFileItemProps,
+  FileDropzoneRemoveProps,
+} from "./components/FileDropzone";
