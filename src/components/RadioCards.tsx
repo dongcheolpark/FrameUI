@@ -38,8 +38,7 @@ export interface RadioCardsItemProps extends HTMLAttributes<HTMLLabelElement> {
   children?: ReactNode;
 }
 
-export interface RadioCardsIndicatorProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {}
+export type RadioCardsIndicatorProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export interface RadioCardsLabelProps extends HTMLAttributes<HTMLSpanElement> {
   children?: ReactNode;
