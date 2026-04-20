@@ -78,6 +78,7 @@ export function TabsRoot({
     >
       <div
         ref={ref}
+        data-ui="tabs"
         data-orientation={orientation}
         className={className}
         {...props}
@@ -150,6 +151,7 @@ export function TabsList({
       ref={ref}
       role="tablist"
       aria-orientation={orientation}
+      data-ui="tabs-list"
       data-orientation={orientation}
       className={className}
       onKeyDown={handleKeyDown}
@@ -195,6 +197,7 @@ export function TabsTrigger({
       role="tab"
       aria-selected={isSelected}
       aria-controls={`tabpanel-${value}`}
+      data-ui="tabs-trigger"
       data-state={isSelected ? "active" : "inactive"}
       data-disabled={disabled ? "" : undefined}
       data-value={value}
@@ -231,6 +234,7 @@ export function TabsContent({
       role="tabpanel"
       id={`tabpanel-${value}`}
       aria-labelledby={`tab-${value}`} // Optional: Should match trigger ID if we generated one
+      data-ui="tabs-content"
       data-state={isSelected ? "active" : "inactive"}
       hidden={!isSelected} /* Applies when forceMount is true but not selected */
       tabIndex={0}
@@ -242,9 +246,14 @@ export function TabsContent({
   );
 }
 
-export const Tabs = {
-  Root: TabsRoot,
-  List: TabsList,
-  Trigger: TabsTrigger,
-  Content: TabsContent,
-};
+export const Tabs = Object.assign(
+  function Tabs(props: TabsRootProps & { ref?: React.Ref<HTMLDivElement> }) {
+    return <TabsRoot {...props} />;
+  },
+  {
+    Root: TabsRoot,
+    List: TabsList,
+    Trigger: TabsTrigger,
+    Content: TabsContent,
+  }
+);
