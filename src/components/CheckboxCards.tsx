@@ -7,6 +7,7 @@ import {
 } from "react";
 import type {
   HTMLAttributes,
+  InputHTMLAttributes,
   ReactNode,
   ChangeEvent,
 } from "react";
@@ -34,7 +35,7 @@ export interface CheckboxCardsItemProps extends HTMLAttributes<HTMLLabelElement>
   children?: ReactNode;
 }
 
-export interface CheckboxCardsIndicatorProps extends HTMLAttributes<HTMLInputElement> {}
+export type CheckboxCardsIndicatorProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export interface CheckboxCardsLabelProps extends HTMLAttributes<HTMLSpanElement> {
   children?: ReactNode;
