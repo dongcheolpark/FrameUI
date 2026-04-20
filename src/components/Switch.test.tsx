@@ -62,4 +62,42 @@ describe("Switch", () => {
     expect(labelElement).toHaveAttribute("data-disabled");
     expect(onCheckedChange).not.toHaveBeenCalled();
   });
+
+  describe("Compound Components", () => {
+    it("Switch.Root + Switch.Thumb으로 렌더링 및 토글이 가능하다", async () => {
+      const user = userEvent.setup();
+
+      render(
+        <Switch.Root aria-label="컴파운드">
+          <Switch.Thumb />
+        </Switch.Root>,
+      );
+
+      const checkboxElement = screen.getByRole("checkbox", { name: "컴파운드" });
+      expect(checkboxElement.parentElement).toHaveAttribute(
+        "data-state",
+        "unchecked",
+      );
+
+      await user.click(checkboxElement);
+
+      expect(checkboxElement.parentElement).toHaveAttribute(
+        "data-state",
+        "checked",
+      );
+    });
+
+    it("Switch.Thumb은 기본 handle className에 사용자 className을 병합한다", () => {
+      render(
+        <Switch.Root aria-label="thumb 클래스">
+          <Switch.Thumb className="custom-thumb" data-testid="thumb" />
+        </Switch.Root>,
+      );
+
+      const thumb = screen.getByTestId("thumb");
+      expect(thumb).toHaveClass("handle");
+      expect(thumb).toHaveClass("custom-thumb");
+      expect(thumb).toHaveAttribute("data-ui", "switch-thumb");
+    });
+  });
 });
