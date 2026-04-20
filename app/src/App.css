@@ -2,6 +2,8 @@
 @import "./components/Textarea.css";
 @import "./components/CheckboxCards.css";
 @import "./components/RadioCards.css";
+@import "./components/Carousel.css";
+@import "./components/FileDropzone.css";
 
 * {
   margin: 0;

@@ -1,6 +1,25 @@
 import { useState } from "react";
-import { Button, Switch, Textarea, CheckboxCards, Tabs, RadioCards, FRAME_UI_VERSION } from "FrameUI";
+import {
+  Button,
+  Switch,
+  Textarea,
+  CheckboxCards,
+  Tabs,
+  RadioCards,
+  Carousel,
+  FileDropzone,
+  FRAME_UI_VERSION,
+  type FileDropzoneRejection,
+} from "FrameUI";
 import "./App.css";
+
+const SLIDE_LABELS = ["Spring", "Summer", "Autumn", "Winter"];
+
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 export function App() {
   const [count, setCount] = useState(0);
@@ -8,6 +27,9 @@ export function App() {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const [selectedRoles, setSelectedRoles] = useState<string[]>(["frontend"]);
   const [selectedFruit, setSelectedFruit] = useState("apple");
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [files, setFiles] = useState<File[]>([]);
+  const [rejections, setRejections] = useState<FileDropzoneRejection[]>([]);
 
   return (
     <main className="page">
@@ -270,6 +292,132 @@ export function App() {
                 </div>
               </RadioCards.Item>
             </RadioCards>
+          </div>
+        </div>
+
+        <hr />
+
+        {/* Carousel 예시 */}
+        <div className="component-section">
+          <h2>Carousel Component</h2>
+
+          <div className="component-example">
+            <h3>1. 기본 (좌우 핸들 + Indicator + 키보드 Arrow)</h3>
+            <Carousel defaultIndex={0} aria-label="계절 배너">
+              <Carousel.PrevTrigger>‹</Carousel.PrevTrigger>
+              <Carousel.Viewport>
+                <Carousel.Track>
+                  {SLIDE_LABELS.map((label) => (
+                    <Carousel.Slide key={label}>{label}</Carousel.Slide>
+                  ))}
+                </Carousel.Track>
+              </Carousel.Viewport>
+              <Carousel.NextTrigger>›</Carousel.NextTrigger>
+              <div className="carousel-indicators" role="tablist" aria-label="슬라이드 선택">
+                {SLIDE_LABELS.map((label, i) => (
+                  <Carousel.Indicator key={label} index={i} aria-label={`${label}로 이동`} />
+                ))}
+              </div>
+            </Carousel>
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>2. Controlled + Loop + Autoplay</h3>
+            <Carousel
+              index={carouselIndex}
+              onIndexChange={setCarouselIndex}
+              loop
+              autoplay={{ interval: 3500 }}
+              pauseOnHover
+              aria-label="자동 재생 배너"
+            >
+              <Carousel.PrevTrigger>‹</Carousel.PrevTrigger>
+              <Carousel.Viewport>
+                <Carousel.Track>
+                  {SLIDE_LABELS.map((label) => (
+                    <Carousel.Slide key={label}>{label}</Carousel.Slide>
+                  ))}
+                </Carousel.Track>
+              </Carousel.Viewport>
+              <Carousel.NextTrigger>›</Carousel.NextTrigger>
+              <div className="carousel-indicators" role="tablist" aria-label="슬라이드 선택">
+                {SLIDE_LABELS.map((label, i) => (
+                  <Carousel.Indicator key={label} index={i} aria-label={`${label}로 이동`} />
+                ))}
+              </div>
+            </Carousel>
+            <div className="status">현재 인덱스: {carouselIndex + 1} / {SLIDE_LABELS.length}</div>
+          </div>
+        </div>
+
+        <hr />
+
+        {/* FileDropzone 예시 */}
+        <div className="component-section">
+          <h2>FileDropzone Component</h2>
+
+          <div className="component-example">
+            <h3>1. Controlled (이미지 · 최대 3개 · 개당 2MB)</h3>
+            <FileDropzone
+              files={files}
+              onFilesChange={setFiles}
+              onReject={(r) => setRejections(r)}
+              accept="image/*"
+              multiple
+              maxFiles={3}
+              maxSize={2 * 1024 * 1024}
+            >
+              <FileDropzone.Zone aria-label="이미지를 드래그하거나 클릭해 업로드">
+                <span>여기에 이미지를 드롭하거나 클릭/탭 하세요</span>
+                <span className="fdz-hint">PNG · JPG · 최대 2MB · 최대 3개</span>
+              </FileDropzone.Zone>
+              <FileDropzone.Input />
+              <FileDropzone.FileList>
+                {files.map((file) => (
+                  <FileDropzone.FileItem key={`${file.name}-${file.lastModified}`} file={file}>
+                    <span className="fdz-name">{file.name}</span>
+                    <span className="fdz-size">{formatBytes(file.size)}</span>
+                    <FileDropzone.Remove file={file} aria-label={`${file.name} 제거`}>
+                      ×
+                    </FileDropzone.Remove>
+                  </FileDropzone.FileItem>
+                ))}
+              </FileDropzone.FileList>
+              {rejections.length > 0 && (
+                <div className="fdz-rejections" role="alert">
+                  {rejections.length}개 파일 거부됨:{" "}
+                  {rejections
+                    .map((r) => `${r.file.name} (${r.reason})`)
+                    .join(", ")}
+                </div>
+              )}
+            </FileDropzone>
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>2. Trigger 버튼 + 모바일 카메라 (capture)</h3>
+            <FileDropzone defaultFiles={[]} accept="image/*" multiple>
+              <FileDropzone.Zone aria-label="사진 업로드">
+                <span>사진을 드롭하거나 아래 버튼을 누르세요</span>
+                <span className="fdz-hint">
+                  모바일에서는 &quot;촬영&quot; 탭 시 후면 카메라가 즉시 열립니다
+                </span>
+              </FileDropzone.Zone>
+              <FileDropzone.Trigger>촬영 또는 선택</FileDropzone.Trigger>
+              {/* capture는 힌트. 모바일만 카메라가 열리고, 데스크톱은 일반 파일 선택. */}
+              <FileDropzone.Input capture="environment" />
+              <FileDropzone.FileList />
+            </FileDropzone>
+          </div>
+
+          <div className="component-example" style={{ marginTop: "24px" }}>
+            <h3>3. Disabled</h3>
+            <FileDropzone disabled>
+              <FileDropzone.Zone aria-label="비활성 드롭존">
+                <span>현재 업로드를 받지 않습니다</span>
+              </FileDropzone.Zone>
+              <FileDropzone.Input />
+            </FileDropzone>
           </div>
         </div>
       </section>
