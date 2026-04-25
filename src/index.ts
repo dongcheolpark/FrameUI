@@ -65,3 +65,12 @@ export type {
   FileDropzoneFileItemProps,
   FileDropzoneRemoveProps,
 } from "./components/FileDropzone";
+
+export { Accordion } from "./components/Accordion";
+export type {
+  AccordionRootProps,
+  AccordionItemProps,
+  AccordionHeaderProps,
+  AccordionTriggerProps,
+  AccordionContentProps,
+} from "./components/Accordion";

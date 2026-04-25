@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import {
+  Accordion,
   Button,
   Switch,
   Textarea,
@@ -25,8 +26,9 @@ const COMPONENTS: ComponentCard[] = [
   { name: "CheckboxCards", year: "2025", gradient: "card-gradient-4", preview: <CheckboxPreview /> },
   { name: "RadioCards", year: "2025", gradient: "card-gradient-5", preview: <RadioPreview /> },
   { name: "Tabs", year: "2025", gradient: "card-gradient-6", preview: <TabsPreview /> },
-  { name: "Carousel", year: "2025", gradient: "card-gradient-7", preview: <CarouselPreview /> },
-  { name: "FileDropzone", year: "2025", gradient: "card-gradient-8", preview: <FileDropzonePreview /> },
+  { name: "Accordion", year: "2025", gradient: "card-gradient-7", preview: <AccordionPreview /> },
+  { name: "Carousel", year: "2025", gradient: "card-gradient-8", preview: <CarouselPreview /> },
+  { name: "FileDropzone", year: "2025", gradient: "card-gradient-9", preview: <FileDropzonePreview /> },
 ];
 
 function chunk<T>(items: T[], size: number): T[][] {
@@ -152,6 +154,29 @@ function TabsPreview() {
         <Tabs.Trigger value="three" className="preview-tabs-trigger">Label</Tabs.Trigger>
       </Tabs.List>
     </Tabs.Root>
+  );
+}
+
+function AccordionPreview() {
+  return (
+    <Accordion.Root type="multiple" defaultValue={["item-1"]} className="preview-accordion">
+      <Accordion.Item value="item-1">
+        <Accordion.Header>
+          <Accordion.Trigger>Accordion item one</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>
+          <p>Basic content preview for the first accordions item.</p>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Header>
+          <Accordion.Trigger>Accordion item two</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>
+          <p>Second item content preview to demonstrate multiple panels.</p>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion.Root>
   );
 }
 

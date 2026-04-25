@@ -239,8 +239,67 @@ body {
   background: #000;
 }
 
-.preview-carousel {
+.preview-accordion {
+  width: min(100%, 280px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preview-accordion [data-ui="accordion-item"] {
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.preview-accordion [data-ui="accordion-trigger"] {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.preview-accordion [data-ui="accordion-trigger"]::after {
+  content: "⌄";
+  margin-left: 16px;
+  transition: transform 0.2s ease;
+}
+
+.preview-accordion [data-ui="accordion-trigger"][data-state="open"]::after {
+  transform: rotate(180deg);
+}
+
+.preview-accordion [data-ui="accordion-content"] {
+  padding: 0 16px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.preview-carousel {
+  width: min(100%, 280px);
+  margin: 0 auto;
+}
+
+.preview-dropzone {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.preview-dropzone [data-ui="file-dropzone-zone"] {
+  background: #ffffff;
 }
 
 .preview-carousel .carousel-indicators {
@@ -248,10 +307,6 @@ body {
   justify-content: center;
   gap: 6px;
   margin-top: 12px;
-}
-
-.preview-dropzone {
-  width: 100%;
 }
 
 
