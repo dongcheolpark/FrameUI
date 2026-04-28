@@ -27,6 +27,11 @@ export type {
 
 export { Tabs } from "./components/Tabs";
 export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from "./components/Tabs";
+export { Modal } from "./components/Modal";
+export type { ModalProps } from "./components/Modal";
+
+export { Popup } from "./components/Popup";
+export type { PopupProps } from "./components/Popup";
 
 export { RadioCards } from "./components/RadioCards";
 export type {

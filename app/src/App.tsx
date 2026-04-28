@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Accordion,
   Button,
@@ -9,6 +9,8 @@ import {
   Tabs,
   Carousel,
   FileDropzone,
+  Modal,
+  Popup,
 } from "FrameUI";
 import "./App.css";
 
@@ -19,18 +21,6 @@ type ComponentCard = {
   preview: ReactNode;
 };
 
-const COMPONENTS: ComponentCard[] = [
-  { name: "Button", year: "2025", gradient: "card-gradient-1", preview: <ButtonPreview /> },
-  { name: "Switch", year: "2025", gradient: "card-gradient-2", preview: <SwitchPreview /> },
-  { name: "Textarea", year: "2025", gradient: "card-gradient-3", preview: <TextareaPreview /> },
-  { name: "CheckboxCards", year: "2025", gradient: "card-gradient-4", preview: <CheckboxPreview /> },
-  { name: "RadioCards", year: "2025", gradient: "card-gradient-5", preview: <RadioPreview /> },
-  { name: "Tabs", year: "2025", gradient: "card-gradient-6", preview: <TabsPreview /> },
-  { name: "Accordion", year: "2025", gradient: "card-gradient-7", preview: <AccordionPreview /> },
-  { name: "Carousel", year: "2025", gradient: "card-gradient-8", preview: <CarouselPreview /> },
-  { name: "FileDropzone", year: "2025", gradient: "card-gradient-9", preview: <FileDropzonePreview /> },
-];
-
 function chunk<T>(items: T[], size: number): T[][] {
   const rows: T[][] = [];
   for (let i = 0; i < items.length; i += size) {
@@ -40,6 +30,33 @@ function chunk<T>(items: T[], size: number): T[][] {
 }
 
 export function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const components: ComponentCard[] = [
+    { name: "Button", year: "2025", gradient: "card-gradient-1", preview: <ButtonPreview /> },
+    { name: "Switch", year: "2025", gradient: "card-gradient-2", preview: <SwitchPreview /> },
+    { name: "Textarea", year: "2025", gradient: "card-gradient-3", preview: <TextareaPreview /> },
+    { name: "CheckboxCards", year: "2025", gradient: "card-gradient-4", preview: <CheckboxPreview /> },
+    { name: "RadioCards", year: "2025", gradient: "card-gradient-5", preview: <RadioPreview /> },
+    { name: "Tabs", year: "2025", gradient: "card-gradient-6", preview: <TabsPreview /> },
+    { name: "Accordion", year: "2025", gradient: "card-gradient-7", preview: <AccordionPreview /> },
+    { name: "Carousel", year: "2025", gradient: "card-gradient-8", preview: <CarouselPreview /> },
+    { name: "FileDropzone", year: "2025", gradient: "card-gradient-9", preview: <FileDropzonePreview /> },
+    {
+      name: "Modal",
+      year: "2025",
+      gradient: "card-gradient-1",
+      preview: <ModalPreview onOpen={() => setIsModalOpen(true)} />,
+    },
+    {
+      name: "Popup",
+      year: "2025",
+      gradient: "card-gradient-2",
+      preview: <PopupPreview onOpen={() => setIsPopupOpen(true)} />,
+    },
+  ];
+
   return (
     <div className="gallery">
       <main className="gallery-container">
@@ -47,7 +64,7 @@ export function App() {
           <h1>Components</h1>
         </header>
 
-        {chunk(COMPONENTS, 2).map((row, rowIndex) => (
+        {chunk(components, 2).map((row, rowIndex) => (
           <section key={rowIndex} className="card-row">
             {row.map((card) => (
               <article key={card.name} className="card">
@@ -84,6 +101,28 @@ export function App() {
           </div>
         </footer>
       </main>
+
+      <Modal
+        isOpen={isModalOpen}
+        onOpenChange={() => setIsModalOpen(false)}
+        title="상세 정보"
+        description="이것은 모달의 상세 내용입니다."
+        footerSlot={
+          <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+            <Button label="취소" onClick={() => setIsModalOpen(false)} />
+            <Button label="확인" onClick={() => setIsModalOpen(false)} />
+          </div>
+        }
+      >
+        <p>모달 본문 내용이 여기에 들어갑니다.</p>
+      </Modal>
+
+      <Popup
+        isOpen={isPopupOpen}
+        onOpenChange={() => setIsPopupOpen(false)}
+        message="성공적으로 처리되었습니다!"
+        type="success"
+      />
     </div>
   );
 }
@@ -212,5 +251,21 @@ function FileDropzonePreview() {
       </FileDropzone.Zone>
       <FileDropzone.Input />
     </FileDropzone>
+  );
+}
+
+function ModalPreview({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="preview-buttons">
+      <Button label="모달 열기" onClick={onOpen} />
+    </div>
+  );
+}
+
+function PopupPreview({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="preview-buttons">
+      <Button label="팝업 띄우기" onClick={onOpen} />
+    </div>
   );
 }
