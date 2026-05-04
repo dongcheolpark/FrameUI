@@ -3,6 +3,7 @@ import {
   Accordion,
   Button,
   Switch,
+  Slider,
   Textarea,
   CheckboxCards,
   RadioCards,
@@ -36,6 +37,7 @@ export function App() {
   const components: ComponentCard[] = [
     { name: "Button", year: "2025", gradient: "card-gradient-1", preview: <ButtonPreview /> },
     { name: "Switch", year: "2025", gradient: "card-gradient-2", preview: <SwitchPreview /> },
+    { name: "Slider", year: "2025", gradient: "card-gradient-3", preview: <SliderPreview /> },
     { name: "Textarea", year: "2025", gradient: "card-gradient-3", preview: <TextareaPreview /> },
     { name: "CheckboxCards", year: "2025", gradient: "card-gradient-4", preview: <CheckboxPreview /> },
     { name: "RadioCards", year: "2025", gradient: "card-gradient-5", preview: <RadioPreview /> },
@@ -144,6 +146,23 @@ function SwitchPreview() {
         <span className="preview-switch-description">Description</span>
       </div>
       <Switch defaultChecked aria-label="Preview switch" />
+    </div>
+  );
+}
+
+function SliderPreview() {
+  const [value, setValue] = useState(40);
+  return (
+    <div className="preview-slider">
+      <div className="preview-slider-text">
+        <span className="preview-slider-label">Label</span>
+        <span className="preview-slider-value">{value}</span>
+      </div>
+      <Slider
+        aria-label="Preview slider"
+        value={value}
+        onValueChange={setValue}
+      />
     </div>
   );
 }

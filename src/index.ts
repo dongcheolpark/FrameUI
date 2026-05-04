@@ -6,6 +6,9 @@ export type { ButtonProps } from "./components/Button";
 export { Switch } from "./components/Switch";
 export type { SwitchProps } from "./components/Switch";
 
+export { Slider } from "./components/Slider";
+export type { SliderProps } from "./components/Slider";
+
 export { Textarea } from "./components/Textarea";
 export type {
   TextareaProps,
