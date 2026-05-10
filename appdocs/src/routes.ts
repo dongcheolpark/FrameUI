@@ -6,6 +6,7 @@ import { TextareaPage } from "./pages/TextareaPage";
 import { CheckboxCardsPage } from "./pages/CheckboxCardsPage";
 import { RadioCardsPage } from "./pages/RadioCardsPage";
 import { TabsPage } from "./pages/TabsPage";
+import { PaginationPage } from "./pages/PaginationPage";
 import { ModalPage } from "./pages/ModalPage";
 import { PopupPage } from "./pages/PopupPage";
 import { CarouselPage } from "./pages/CarouselPage";
@@ -30,6 +31,7 @@ export const routes: RouteDef[] = [
   { slug: "radio-cards", title: "RadioCards", category: "Forms", component: RadioCardsPage },
   { slug: "file-dropzone", title: "FileDropzone", category: "Forms", component: FileDropzonePage },
   { slug: "tabs", title: "Tabs", category: "Navigation", component: TabsPage },
+  { slug: "pagination", title: "Pagination", category: "Navigation", component: PaginationPage },
   { slug: "accordion", title: "Accordion", category: "Disclosure", component: AccordionPage },
   { slug: "carousel", title: "Carousel", category: "Disclosure", component: CarouselPage },
   { slug: "modal", title: "Modal", category: "Overlays", component: ModalPage },
