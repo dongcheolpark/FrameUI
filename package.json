@@ -21,9 +21,11 @@
     "app:dev": "pnpm --filter ./app dev",
     "app:build": "pnpm --filter ./app build",
     "app:preview": "pnpm --filter ./app preview",
+    "app:deploy": "pnpm build && pnpm app:build && wrangler deploy --config app/wrangler.jsonc",
     "docs:dev": "pnpm --filter ./appdocs dev",
     "docs:build": "pnpm --filter ./appdocs build",
     "docs:preview": "pnpm --filter ./appdocs preview",
+    "docs:deploy": "pnpm build && pnpm docs:build && wrangler deploy --config appdocs/wrangler.jsonc",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "test": "vitest run",
@@ -51,7 +53,8 @@
     "react-dom": "^19.2.4",
     "tsdown": "^0.21.4",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "wrangler": "^4.90.0"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
