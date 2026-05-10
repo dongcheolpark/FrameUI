@@ -82,3 +82,14 @@ export type {
   AccordionTriggerProps,
   AccordionContentProps,
 } from "./components/Accordion";
+
+export { Pagination, usePaginationContext } from "./components/Pagination";
+export type {
+  PaginationEntry,
+  PaginationContextValue,
+  PaginationRootProps,
+  PaginationListProps,
+  PaginationItemProps,
+  PaginationEllipsisProps,
+  PaginationNavButtonProps,
+} from "./components/Pagination";
