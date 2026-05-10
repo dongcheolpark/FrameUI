@@ -1,6 +1,10 @@
-import { render, screen, act } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen, act, cleanup } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { Popup } from "./Popup";
+
+afterEach(() => {
+  cleanup();
+});
 
 describe("Popup", () => {
   it("메시지를 올바르게 노출한다", () => {

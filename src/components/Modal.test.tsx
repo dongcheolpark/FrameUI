@@ -1,7 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { Modal } from "./Modal";
+
+afterEach(() => {
+  cleanup();
+});
 
 describe("Modal", () => {
   it("isOpen이 false면 렌더링되지 않는다", () => {
