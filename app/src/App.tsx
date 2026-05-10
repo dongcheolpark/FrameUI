@@ -12,6 +12,7 @@ import {
   FileDropzone,
   Modal,
   Popup,
+  Pagination,
 } from "FrameUI";
 import "./App.css";
 
@@ -57,6 +58,7 @@ export function App() {
       gradient: "card-gradient-2",
       preview: <PopupPreview onOpen={() => setIsPopupOpen(true)} />,
     },
+    { name: "Pagination", year: "2025", gradient: "card-gradient-4", preview: <PaginationPreview /> },
   ];
 
   return (
@@ -286,5 +288,27 @@ function PopupPreview({ onOpen }: { onOpen: () => void }) {
     <div className="preview-buttons">
       <Button label="팝업 띄우기" onClick={onOpen} />
     </div>
+  );
+}
+
+function PaginationPreview() {
+  const [page, setPage] = useState(3);
+  return (
+    <Pagination
+      page={page}
+      totalPages={10}
+      onPageChange={setPage}
+      siblingCount={1}
+      boundaryCount={1}
+      className="preview-pagination"
+    >
+      <Pagination.Prev className="preview-pagination-nav" aria-label="Previous page">
+        ‹
+      </Pagination.Prev>
+      <Pagination.List className="preview-pagination-list" />
+      <Pagination.Next className="preview-pagination-nav" aria-label="Next page">
+        ›
+      </Pagination.Next>
+    </Pagination>
   );
 }
