@@ -1,0 +1,191 @@
+[data-ui="toast-viewport"] {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  margin: 0;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  padding-right: max(16px, env(safe-area-inset-right));
+  list-style: none;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+  outline: none;
+}
+
+[data-ui="toast-viewport"] > * {
+  pointer-events: auto;
+}
+
+/* Root */
+[data-ui="toast-root"] {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title close"
+    "desc  close"
+    "action action";
+  column-gap: 12px;
+  row-gap: 4px;
+  align-items: center;
+  padding: 14px 14px 14px 16px;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 10px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-size: 14px;
+  line-height: 1.45;
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 180ms ease;
+  touch-action: pan-y;
+}
+
+/* Type별 좌측 표식 */
+[data-ui="toast-root"][data-type="background"] {
+  border-left: 3px solid #10b981;
+}
+
+[data-ui="toast-root"][data-type="foreground"] {
+  border-left: 3px solid #ef4444;
+  background: #fff7f7;
+}
+
+/* Priority high는 시각적으로 강조 */
+[data-ui="toast-root"][data-priority="high"] {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.08),
+    0 12px 32px rgba(239, 68, 68, 0.18);
+}
+
+/* State transitions */
+[data-ui="toast-root"][data-state="open"] {
+  animation: toast-slide-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-ui="toast-root"][data-state="closed"] {
+  animation: toast-slide-out 160ms ease forwards;
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+/* Title */
+[data-ui="toast-title"] {
+  grid-area: title;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Description */
+[data-ui="toast-description"] {
+  grid-area: desc;
+  color: #4b5563;
+  font-size: 13px;
+}
+
+/* Action button */
+[data-ui="toast-action"] {
+  grid-area: action;
+  justify-self: end;
+  margin-top: 6px;
+  min-height: 36px;
+  min-width: 44px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+[data-ui="toast-action"]:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+[data-ui="toast-action"]:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Close button — 터치 타겟 44x44 보장 */
+[data-ui="toast-close"] {
+  grid-area: close;
+  align-self: start;
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px -10px 0;
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-ui="toast-close"]:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #111827;
+}
+
+[data-ui="toast-close"]:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-ui="toast-root"][data-state="open"],
+  [data-ui="toast-root"][data-state="closed"] {
+    animation: none;
+  }
+  [data-ui="toast-root"] {
+    transition: none;
+  }
+}
+
+/* 모바일 — Viewport를 화면 하단 가운데로 정렬하는 변형 */
+@media (max-width: 480px) {
+  [data-ui="toast-viewport"] {
+    left: 0;
+    right: 0;
+    width: auto;
+    padding-left: max(16px, env(safe-area-inset-left));
+  }
+}

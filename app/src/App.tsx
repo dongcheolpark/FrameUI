@@ -13,6 +13,7 @@ import {
   Modal,
   Popup,
   Pagination,
+  Toast
 } from "FrameUI";
 import "./App.css";
 
@@ -310,5 +311,41 @@ function PaginationPreview() {
         ›
       </Pagination.Next>
     </Pagination>
+  );
+}
+
+function ToastPreview() {
+  const { toast } = Toast.useToast();
+  return (
+    <div className="preview-buttons">
+      <Button
+        label="성공 토스트"
+        onClick={() =>
+          toast.success({
+            title: "저장됨",
+            description: "프로필이 업데이트되었습니다.",
+          })
+        }
+      />
+      <Button
+        label="오류 + 액션"
+        onClick={() =>
+          toast.error({
+            id: "offline",
+            title: "연결이 끊어졌습니다",
+            description: "네트워크를 확인해 주세요.",
+            duration: Number.POSITIVE_INFINITY,
+            action: (
+              <Toast.Action
+                altText="다시 시도"
+                onClick={() => console.log("retry")}
+              >
+                다시 시도
+              </Toast.Action>
+            ),
+          })
+        }
+      />
+    </div>
   );
 }

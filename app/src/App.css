@@ -4,6 +4,7 @@
 @import "./components/RadioCards.css";
 @import "./components/Carousel.css";
 @import "./components/FileDropzone.css";
+@import "./components/Toast.css";
 
 * {
   margin: 0;
