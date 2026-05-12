@@ -13,6 +13,7 @@ import { CarouselPage } from "./pages/CarouselPage";
 import { FileDropzonePage } from "./pages/FileDropzonePage";
 import { AccordionPage } from "./pages/AccordionPage";
 import { IntroPage } from "./pages/IntroPage";
+import { ToastPage } from "./pages/ToastPage";
 
 export type RouteDef = {
   slug: string;
@@ -36,4 +37,5 @@ export const routes: RouteDef[] = [
   { slug: "carousel", title: "Carousel", category: "Disclosure", component: CarouselPage },
   { slug: "modal", title: "Modal", category: "Overlays", component: ModalPage },
   { slug: "popup", title: "Popup", category: "Overlays", component: PopupPage },
+  { slug: "toast", title: "Toast", category: "Overlays", component: ToastPage },
 ];

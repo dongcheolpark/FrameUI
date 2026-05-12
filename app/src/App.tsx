@@ -60,74 +60,78 @@ export function App() {
       preview: <PopupPreview onOpen={() => setIsPopupOpen(true)} />,
     },
     { name: "Pagination", year: "2025", gradient: "card-gradient-4", preview: <PaginationPreview /> },
+    { name: "Toast", year: "2025", gradient: "card-gradient-5", preview: <ToastPreview /> },
   ];
 
   return (
     <div className="gallery">
-      <main className="gallery-container">
-        <header className="hero">
-          <h1>Components</h1>
-        </header>
+      <Toast.Provider duration={4000} limit={3}>
+        <main className="gallery-container">
+          <header className="hero">
+            <h1>Components</h1>
+          </header>
 
-        {chunk(components, 2).map((row, rowIndex) => (
-          <section key={rowIndex} className="card-row">
-            {row.map((card) => (
-              <article key={card.name} className="card">
-                <div className={`card-image ${card.gradient}`}>
-                  <div className="preview-panel">{card.preview}</div>
-                </div>
-                <div className="card-text">
-                  <h2>{card.name}</h2>
-                  <span className="card-year">{card.year}</span>
-                </div>
-              </article>
-            ))}
-          </section>
-        ))}
+          {chunk(components, 2).map((row, rowIndex) => (
+            <section key={rowIndex} className="card-row">
+              {row.map((card) => (
+                <article key={card.name} className="card">
+                  <div className={`card-image ${card.gradient}`}>
+                    <div className="preview-panel">{card.preview}</div>
+                  </div>
+                  <div className="card-text">
+                    <h2>{card.name}</h2>
+                    <span className="card-year">{card.year}</span>
+                  </div>
+                </article>
+              ))}
+            </section>
+          ))}
 
-        <footer className="site-footer">
-          <div className="about">
-            <h2>Our design philosophy</h2>
-            <p>
-              Behind every portfolio is a point of view. A great project page
-              gives that sense of perspective to offer a glimpse of the person
-              behind the work. Is it a particular artistic movement? A way of
-              experiencing the world? What drives all these things to be the
-              way they are?
-            </p>
-          </div>
-          <div className="contact">
-            <h2>Reach out</h2>
-            <nav className="social">
-              <a href="#">Email</a>
-              <a href="#">Instagram</a>
-              <a href="#">Linkedin</a>
-            </nav>
-          </div>
-        </footer>
-      </main>
+          <footer className="site-footer">
+            <div className="about">
+              <h2>Our design philosophy</h2>
+              <p>
+                Behind every portfolio is a point of view. A great project page
+                gives that sense of perspective to offer a glimpse of the person
+                behind the work. Is it a particular artistic movement? A way of
+                experiencing the world? What drives all these things to be the
+                way they are?
+              </p>
+            </div>
+            <div className="contact">
+              <h2>Reach out</h2>
+              <nav className="social">
+                <a href="#">Email</a>
+                <a href="#">Instagram</a>
+                <a href="#">Linkedin</a>
+              </nav>
+            </div>
+          </footer>
+        </main>
 
-      <Modal
-        isOpen={isModalOpen}
-        onOpenChange={() => setIsModalOpen(false)}
-        title="상세 정보"
-        description="이것은 모달의 상세 내용입니다."
-        footerSlot={
-          <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-            <Button label="취소" onClick={() => setIsModalOpen(false)} />
-            <Button label="확인" onClick={() => setIsModalOpen(false)} />
-          </div>
-        }
-      >
-        <p>모달 본문 내용이 여기에 들어갑니다.</p>
-      </Modal>
+        <Modal
+          isOpen={isModalOpen}
+          onOpenChange={() => setIsModalOpen(false)}
+          title="상세 정보"
+          description="이것은 모달의 상세 내용입니다."
+          footerSlot={
+            <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+              <Button label="취소" onClick={() => setIsModalOpen(false)} />
+              <Button label="확인" onClick={() => setIsModalOpen(false)} />
+            </div>
+          }
+        >
+          <p>모달 본문 내용이 여기에 들어갑니다.</p>
+        </Modal>
 
-      <Popup
-        isOpen={isPopupOpen}
-        onOpenChange={() => setIsPopupOpen(false)}
-        message="성공적으로 처리되었습니다!"
-        type="success"
-      />
+        <Popup
+          isOpen={isPopupOpen}
+          onOpenChange={() => setIsPopupOpen(false)}
+          message="성공적으로 처리되었습니다!"
+          type="success"
+        />
+        <Toast.Viewport />
+      </Toast.Provider>
     </div>
   );
 }
@@ -319,28 +323,28 @@ function ToastPreview() {
   return (
     <div className="preview-buttons">
       <Button
-        label="성공 토스트"
+        label="Show success"
         onClick={() =>
           toast.success({
-            title: "저장됨",
-            description: "프로필이 업데이트되었습니다.",
+            title: "Saved",
+            description: "Your profile has been updated.",
           })
         }
       />
       <Button
-        label="오류 + 액션"
+        label="Error + action"
         onClick={() =>
           toast.error({
             id: "offline",
-            title: "연결이 끊어졌습니다",
-            description: "네트워크를 확인해 주세요.",
+            title: "You're offline",
+            description: "Check your network connection.",
             duration: Number.POSITIVE_INFINITY,
             action: (
               <Toast.Action
-                altText="다시 시도"
+                altText="Retry"
                 onClick={() => console.log("retry")}
               >
-                다시 시도
+                Retry
               </Toast.Action>
             ),
           })

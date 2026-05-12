@@ -19,17 +19,6 @@ import type {
   ReactNode,
 } from "react";
 
-/* ------------------------------------------------------------------ */
-/* Slot — asChild 머지 유틸                                             */
-/* ------------------------------------------------------------------ */
-/* Slot은 단일 자식을 받아 slotProps를 자식 props와 머지합니다.
- *   - 이벤트 핸들러(`on*`): 자식 핸들러 → slot 핸들러 순서로 체이닝.
- *     자식이 e.preventDefault()를 호출하면 slot 핸들러는 건너뜁니다.
- *   - className: 공백으로 concat
- *   - style: 객체 머지(자식이 충돌 시 승리)
- *   - 그 외 attr: 자식 props가 정의되어 있으면 자식이 승리, 아니면 slot 값
- *     (ARIA / data-* / role 은 slot이 기본을 깔되 사용자가 명시적으로 덮어쓸 수 있게 함)
- */
 interface SlotProps extends Record<string, unknown> {
   children?: ReactNode;
 }
@@ -422,16 +411,9 @@ export interface ToastRootProps
   priority?: ToastPriority;
   duration?: number;
   asChild?: boolean;
-  /** Prop 모드: title이 정의되면 내부에서 자동으로 <Toast.Title>을 조립합니다. */
   title?: ReactNode;
-  /** Prop 모드: description이 정의되면 내부에서 자동으로 <Toast.Description>을 조립합니다. */
   description?: ReactNode;
-  /** Prop 모드: action ReactNode(보통 <Toast.Action>)을 그대로 렌더합니다. */
   action?: ReactNode;
-  /**
-   * Prop 모드에서 끝에 자동 부착되는 닫기 버튼을 끕니다(기본 false).
-   * 사용자가 Close 버튼 모양을 완전히 통제하려면 compound 모드(children)로 전환하세요.
-   */
   hideClose?: boolean;
   children?: ReactNode;
 }
