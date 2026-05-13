@@ -34,6 +34,19 @@ pnpm workspace로 연결되어 있어, `app/`에서 루트 라이브러리를 `w
 
 ## 🚀 시작하기
 
+### 0) 사전 요구 사항
+
+- Node.js `^20.19.0 || >=22.12.0` (`rolldown` 네이티브 바인딩 요구 사항)
+- pnpm `10.x`
+
+`.tool-versions` / `.nvmrc`에 버전이 고정되어 있으므로 asdf·nvm·Volta를 쓰면 자동으로 맞춰집니다.
+
+```bash
+asdf install   # 또는: nvm use
+```
+
+> ⚠️ Node 버전이 요구사항보다 낮으면 pnpm이 `rolldown` 네이티브 바인딩(optional dep)을 조용히 건너뛰어 `pnpm build` 시 `Cannot find native binding` 오류가 발생합니다.
+
 ### 1) 의존성 설치
 
 ```bash

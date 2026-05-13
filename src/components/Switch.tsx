@@ -44,7 +44,7 @@ export function Switch({
 
   return (
     <label
-      data-component="switch"
+      data-ui="switch"
       data-state={currentChecked ? "checked" : "unchecked"}
       data-disabled={disabled ? "" : undefined}
       style={{ cursor: disabled ? "not-allowed" : "pointer" }}

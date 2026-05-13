@@ -1,216 +1,355 @@
-import { useState } from "react";
-import { Button , Modal , Popup, Switch, Textarea, CheckboxCards, Tabs, FRAME_UI_VERSION } from "FrameUI";
-
+import { useState, type ReactNode } from "react";
+import {
+  Accordion,
+  Button,
+  Switch,
+  Slider,
+  Textarea,
+  CheckboxCards,
+  RadioCards,
+  Tabs,
+  Carousel,
+  FileDropzone,
+  Modal,
+  Popup,
+  Pagination,
+  Toast
+} from "FrameUI";
 import "./App.css";
-export function App() {
-  const [count, setCount] = useState(0);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>(["frontend"]);
 
+type ComponentCard = {
+  name: string;
+  year: string;
+  gradient: string;
+  preview: ReactNode;
+};
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    rows.push(items.slice(i, i + size));
+  }
+  return rows;
+}
+
+export function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const components: ComponentCard[] = [
+    { name: "Button", year: "2025", gradient: "card-gradient-1", preview: <ButtonPreview /> },
+    { name: "Switch", year: "2025", gradient: "card-gradient-2", preview: <SwitchPreview /> },
+    { name: "Slider", year: "2025", gradient: "card-gradient-3", preview: <SliderPreview /> },
+    { name: "Textarea", year: "2025", gradient: "card-gradient-3", preview: <TextareaPreview /> },
+    { name: "CheckboxCards", year: "2025", gradient: "card-gradient-4", preview: <CheckboxPreview /> },
+    { name: "RadioCards", year: "2025", gradient: "card-gradient-5", preview: <RadioPreview /> },
+    { name: "Tabs", year: "2025", gradient: "card-gradient-6", preview: <TabsPreview /> },
+    { name: "Accordion", year: "2025", gradient: "card-gradient-7", preview: <AccordionPreview /> },
+    { name: "Carousel", year: "2025", gradient: "card-gradient-8", preview: <CarouselPreview /> },
+    { name: "FileDropzone", year: "2025", gradient: "card-gradient-9", preview: <FileDropzonePreview /> },
+    {
+      name: "Modal",
+      year: "2025",
+      gradient: "card-gradient-1",
+      preview: <ModalPreview onOpen={() => setIsModalOpen(true)} />,
+    },
+    {
+      name: "Popup",
+      year: "2025",
+      gradient: "card-gradient-2",
+      preview: <PopupPreview onOpen={() => setIsPopupOpen(true)} />,
+    },
+    { name: "Pagination", year: "2025", gradient: "card-gradient-4", preview: <PaginationPreview /> },
+    { name: "Toast", year: "2025", gradient: "card-gradient-5", preview: <ToastPreview /> },
+  ];
+
   return (
-    <main className="page">
-      <section className="card">
-        <h1>FrameUI Demo</h1>
-        <p>라이브러리 버전: {FRAME_UI_VERSION}</p>
+    <div className="gallery">
+      <Toast.Provider duration={4000} limit={3}>
+        <main className="gallery-container">
+          <header className="hero">
+            <h1>Components</h1>
+          </header>
 
-        <hr />
+          {chunk(components, 2).map((row, rowIndex) => (
+            <section key={rowIndex} className="card-row">
+              {row.map((card) => (
+                <article key={card.name} className="card">
+                  <div className={`card-image ${card.gradient}`}>
+                    <div className="preview-panel">{card.preview}</div>
+                  </div>
+                  <div className="card-text">
+                    <h2>{card.name}</h2>
+                    <span className="card-year">{card.year}</span>
+                  </div>
+                </article>
+              ))}
+            </section>
+          ))}
 
-        <div className="component-section">
-          <h2>Button Component</h2>
-          <p>버튼 클릭 수: {count}</p>
-          <Button
-            label="클릭해보기"
-            onClick={() => setCount((value) => value + 1)}
-          />
-        </div>
-
-        <hr />
-
-        <div className="component-section">
-          <h2>Modal & Popup</h2>
-          <div style={{ display: "flex", gap: "8px" }}>
-            <Button label="모달 열기" onClick={() => setIsModalOpen(true)} />
-            <Button label="팝업 띄우기" onClick={() => setIsPopupOpen(true)} />
-          </div>
-        </div>
-
-        <hr />
-
-        <div className="component-section">
-          <h2>Switch Component</h2>
-          <div className="switch-example">
-            <label>다크모드</label>
-            <Switch
-              checked={isDarkMode}
-              onCheckedChange={setIsDarkMode}
-              aria-label="다크모드 토글"
-            />
-            <span className="status">{isDarkMode ? "🌙 ON" : "☀️ OFF"}</span>
-          </div>
-
-          <div className="switch-example">
-            <label>알림 활성화</label>
-            <Switch
-              checked={isNotificationEnabled}
-              onCheckedChange={setIsNotificationEnabled}
-              aria-label="알림 토글"
-            />
-            <span className="status">
-              {isNotificationEnabled ? "🔔 ON" : "🔕 OFF"}
-            </span>
-          </div>
-
-          <div className="switch-example">
-            <label>비활성화된 스위치</label>
-            <Switch defaultChecked={true} disabled aria-label="비활성화 예시" />
-            <span className="status">비활성화됨</span>
-          </div>
-        </div>
-
-        <hr />
-
-        <div className="component-section">
-          <h2>Textarea Component</h2>
-          <div className="component-example" style={{ marginBottom: "24px" }}>
-            <h3>1. 단축형(Shorthand) 사용</h3>
-            <Textarea
-              placeholder="댓글을 남겨주세요..."
-              minRows={2}
-              maxRows={4}
-              actionSlot={<Button label="작성" />}
-            />
-          </div>
-
-          <div className="component-example">
-            <h3>2. Compound 패턴 사용</h3>
-            <Textarea.Root>
-              <Textarea.Input placeholder="상세 내용을 입력하세요." minRows={4} />
-              <Textarea.Action>
-                <div style={{ display: "flex", gap: "8px", width: "100%", justifyContent: "flex-end" }}>
-                  <Button label="임시저장" />
-                  <Button label="확인" />
-                </div>
-              </Textarea.Action>
-            </Textarea.Root>
-          </div>
-        </div>
-
-        <hr />
-
-        <div className="component-section">
-          <h2>CheckboxCards Component</h2>
-          <div className="component-example">
-            <h3>1. Controlled</h3>
-            <CheckboxCards
-              value={selectedRoles}
-              onValueChange={setSelectedRoles}
-              options={[
-                { value: "design", label: "Design", description: "UI 작업" },
-                { value: "frontend", label: "Frontend", description: "React 개발" },
-                { value: "backend", label: "Backend", description: "API 개발" },
-              ]}
-            />
-            <div className="status">
-              선택된 값: {selectedRoles.join(", ") || "없음"}
+          <footer className="site-footer">
+            <div className="about">
+              <h2>Our design philosophy</h2>
+              <p>
+                Behind every portfolio is a point of view. A great project page
+                gives that sense of perspective to offer a glimpse of the person
+                behind the work. Is it a particular artistic movement? A way of
+                experiencing the world? What drives all these things to be the
+                way they are?
+              </p>
             </div>
-          </div>
+            <div className="contact">
+              <h2>Reach out</h2>
+              <nav className="social">
+                <a href="#">Email</a>
+                <a href="#">Instagram</a>
+                <a href="#">Linkedin</a>
+              </nav>
+            </div>
+          </footer>
+        </main>
 
-          <div className="component-example" style={{ marginTop: "24px" }}>
-            <h3>2. Uncontrolled</h3>
-            <CheckboxCards
-              defaultValue={["basic"]}
-              options={[
-                { value: "basic", label: "Basic" },
-                { value: "pro", label: "Pro" },
-                { value: "team", label: "Team" },
-              ]}
-            />
-          </div>
+        <Modal
+          isOpen={isModalOpen}
+          onOpenChange={() => setIsModalOpen(false)}
+          title="상세 정보"
+          description="이것은 모달의 상세 내용입니다."
+          footerSlot={
+            <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+              <Button label="취소" onClick={() => setIsModalOpen(false)} />
+              <Button label="확인" onClick={() => setIsModalOpen(false)} />
+            </div>
+          }
+        >
+          <p>모달 본문 내용이 여기에 들어갑니다.</p>
+        </Modal>
 
-          <div className="component-example" style={{ marginTop: "24px" }}>
-            <h3>3. Disabled</h3>
-            <CheckboxCards
-              disabled
-              defaultValue={["design"]}
-              options={[{ value: "design", label: "Disabled option" }]}
-            />
-          </div>
+        <Popup
+          isOpen={isPopupOpen}
+          onOpenChange={() => setIsPopupOpen(false)}
+          message="성공적으로 처리되었습니다!"
+          type="success"
+        />
+        <Toast.Viewport />
+      </Toast.Provider>
+    </div>
+  );
+}
 
-          <div className="component-example" style={{ marginTop: "24px" }}>
-            <h3>4. Compound 패턴</h3>
-            <CheckboxCards defaultValue={["custom"]}>
-              <CheckboxCards.Item value="custom">
-                <CheckboxCards.Indicator />
-                <div>
-                  <CheckboxCards.Label>Custom Layout</CheckboxCards.Label>
-                  <CheckboxCards.Description>자유로운 구조로 작성</CheckboxCards.Description>
-                </div>
-              </CheckboxCards.Item>
-            </CheckboxCards>
-          </div>
-        </div>
+function ButtonPreview() {
+  return (
+    <div className="preview-buttons">
+      <Button label="Label" />
+      <Button label="Label" />
+    </div>
+  );
+}
 
-        <hr />
+function SwitchPreview() {
+  return (
+    <div className="preview-switch">
+      <div className="preview-switch-text">
+        <span className="preview-switch-label">Label</span>
+        <span className="preview-switch-description">Description</span>
+      </div>
+      <Switch defaultChecked aria-label="Preview switch" />
+    </div>
+  );
+}
 
-        <div className="component-section">
-          <h2>Tabs Component</h2>
-          <Tabs.Root defaultValue="account" className="tabs-root">
-            <Tabs.List className="tabs-list">
-              <Tabs.Trigger value="account" className="tabs-trigger">계정 관리</Tabs.Trigger>
-              <Tabs.Trigger value="password" className="tabs-trigger">보안 및 비밀번호</Tabs.Trigger>
-              <Tabs.Trigger value="billing" className="tabs-trigger" disabled>결제 (준비중)</Tabs.Trigger>
-            </Tabs.List>
-
-            <Tabs.Content value="account" className="tabs-content">
-              <h3>개인 정보</h3>
-              <p style={{ marginBottom: "16px" }}>계정의 기본 프로필 정보를 업데이트하세요.</p>
-              <Textarea placeholder="간단한 자기소개를 작성해주세요." minRows={2} maxRows={4} />
-              <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
-                <Button label="변경 사항 저장" />
-              </div>
-            </Tabs.Content>
-
-            <Tabs.Content value="password" className="tabs-content">
-              <h3>로그인 및 보안</h3>
-              <p style={{ marginBottom: "16px" }}>마지막 비밀번호 변경일: 최근 (2026.04.01)</p>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <Button label="비밀번호 변경" />
-                <Button label="2단계 인증 로그아웃" style={{ background: "#ef4444" }} />
-              </div>
-            </Tabs.Content>
-
-            <Tabs.Content value="billing" className="tabs-content">
-              <h3>결제 수단 관리</h3>
-            </Tabs.Content>
-          </Tabs.Root>
-        </div>
-      </section>
-
-      <Modal
-        isOpen={isModalOpen}
-        onOpenChange={() => setIsModalOpen(false)}
-        title="상세 정보"
-        description="이것은 모달의 상세 내용입니다."
-        footerSlot={
-          <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-            <Button label="취소" onClick={() => setIsModalOpen(false)} />
-            <Button label="확인" onClick={() => setIsModalOpen(false)} />
-          </div>
-        }
-      >
-        <p>모달 본문 내용이 여기에 들어갑니다.</p>
-      </Modal>
-
-      <Popup
-        isOpen={isPopupOpen}
-        onOpenChange={() => setIsPopupOpen(false)}
-        message="성공적으로 처리되었습니다!"
-        type="success"
+function SliderPreview() {
+  const [value, setValue] = useState(40);
+  return (
+    <div className="preview-slider">
+      <div className="preview-slider-text">
+        <span className="preview-slider-label">Label</span>
+        <span className="preview-slider-value">{value}</span>
+      </div>
+      <Slider
+        aria-label="Preview slider"
+        value={value}
+        onValueChange={setValue}
       />
-    </main>
+    </div>
+  );
+}
+
+function TextareaPreview() {
+  return (
+    <Textarea
+      placeholder="Leave a comment…"
+      minRows={2}
+      maxRows={3}
+      actionSlot={<Button label="Send" />}
+    />
+  );
+}
+
+function CheckboxPreview() {
+  return (
+    <CheckboxCards
+      defaultValue={["frontend"]}
+      options={[
+        { value: "design", label: "Design", description: "UI work" },
+        { value: "frontend", label: "Frontend", description: "React" },
+      ]}
+    />
+  );
+}
+
+function RadioPreview() {
+  return (
+    <RadioCards
+      defaultValue="apple"
+      name="preview-radio"
+      options={[
+        { value: "apple", label: "Apple", description: "crisp" },
+        { value: "banana", label: "Banana", description: "tropical" },
+      ]}
+    />
+  );
+}
+
+function TabsPreview() {
+  return (
+    <Tabs.Root defaultValue="one" className="preview-tabs">
+      <Tabs.List className="preview-tabs-list">
+        <Tabs.Trigger value="one" className="preview-tabs-trigger">Label</Tabs.Trigger>
+        <Tabs.Trigger value="two" className="preview-tabs-trigger">Label</Tabs.Trigger>
+        <Tabs.Trigger value="three" className="preview-tabs-trigger">Label</Tabs.Trigger>
+      </Tabs.List>
+    </Tabs.Root>
+  );
+}
+
+function AccordionPreview() {
+  return (
+    <Accordion.Root type="multiple" defaultValue={["item-1"]} className="preview-accordion">
+      <Accordion.Item value="item-1">
+        <Accordion.Header>
+          <Accordion.Trigger>Accordion item one</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>
+          <p>Basic content preview for the first accordions item.</p>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Header>
+          <Accordion.Trigger>Accordion item two</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>
+          <p>Second item content preview to demonstrate multiple panels.</p>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion.Root>
+  );
+}
+
+const PREVIEW_SLIDES = ["Spring", "Summer", "Autumn", "Winter"];
+
+function CarouselPreview() {
+  return (
+    <Carousel defaultIndex={0} aria-label="Preview carousel" className="preview-carousel">
+      <Carousel.PrevTrigger>‹</Carousel.PrevTrigger>
+      <Carousel.Viewport>
+        <Carousel.Track>
+          {PREVIEW_SLIDES.map((label) => (
+            <Carousel.Slide key={label}>{label}</Carousel.Slide>
+          ))}
+        </Carousel.Track>
+      </Carousel.Viewport>
+      <Carousel.NextTrigger>›</Carousel.NextTrigger>
+      <div className="carousel-indicators" role="tablist" aria-label="Slide select">
+        {PREVIEW_SLIDES.map((label, i) => (
+          <Carousel.Indicator key={label} index={i} aria-label={`Go to ${label}`} />
+        ))}
+      </div>
+    </Carousel>
+  );
+}
+
+function FileDropzonePreview() {
+  return (
+    <FileDropzone defaultFiles={[]} accept="image/*" className="preview-dropzone">
+      <FileDropzone.Zone aria-label="Upload preview">
+        <span>Drop files here</span>
+        <span className="fdz-hint">or click to browse</span>
+      </FileDropzone.Zone>
+      <FileDropzone.Input />
+    </FileDropzone>
+  );
+}
+
+function ModalPreview({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="preview-buttons">
+      <Button label="모달 열기" onClick={onOpen} />
+    </div>
+  );
+}
+
+function PopupPreview({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="preview-buttons">
+      <Button label="팝업 띄우기" onClick={onOpen} />
+    </div>
+  );
+}
+
+function PaginationPreview() {
+  const [page, setPage] = useState(3);
+  return (
+    <Pagination
+      page={page}
+      totalPages={10}
+      onPageChange={setPage}
+      siblingCount={1}
+      boundaryCount={1}
+      className="preview-pagination"
+    >
+      <Pagination.Prev className="preview-pagination-nav" aria-label="Previous page">
+        ‹
+      </Pagination.Prev>
+      <Pagination.List className="preview-pagination-list" />
+      <Pagination.Next className="preview-pagination-nav" aria-label="Next page">
+        ›
+      </Pagination.Next>
+    </Pagination>
+  );
+}
+
+function ToastPreview() {
+  const { toast } = Toast.useToast();
+  return (
+    <div className="preview-buttons">
+      <Button
+        label="Show success"
+        onClick={() =>
+          toast.success({
+            title: "Saved",
+            description: "Your profile has been updated.",
+          })
+        }
+      />
+      <Button
+        label="Error + action"
+        onClick={() =>
+          toast.error({
+            id: "offline",
+            title: "You're offline",
+            description: "Check your network connection.",
+            duration: Number.POSITIVE_INFINITY,
+            action: (
+              <Toast.Action
+                altText="Retry"
+                onClick={() => console.log("retry")}
+              >
+                Retry
+              </Toast.Action>
+            ),
+          })
+        }
+      />
+    </div>
   );
 }

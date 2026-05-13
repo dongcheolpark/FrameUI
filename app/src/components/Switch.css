@@ -1,13 +1,13 @@
 /* Switch Component Styling */
 
-[data-component="switch"],
-[data-component="switch"] .handle {
+[data-ui="switch"],
+[data-ui="switch"] .handle {
   display: inline-flex;
   align-items: center;
 }
 
 /* Unchecked state */
-[data-component="switch"][data-state="unchecked"] .handle {
+[data-ui="switch"][data-state="unchecked"] .handle {
   position: relative;
   width: 44px;
   height: 24px;
@@ -17,7 +17,7 @@
 }
 
 /* Checked state */
-[data-component="switch"][data-state="checked"] .handle {
+[data-ui="switch"][data-state="checked"] .handle {
   position: relative;
   width: 44px;
   height: 24px;
@@ -27,7 +27,7 @@
 }
 
 /* Handle slider - unchecked position */
-[data-component="switch"][data-state="unchecked"] .handle::before {
+[data-ui="switch"][data-state="unchecked"] .handle::before {
   content: "";
   position: absolute;
   left: 2px;
@@ -41,7 +41,7 @@
 }
 
 /* Handle slider - checked position */
-[data-component="switch"][data-state="checked"] .handle::before {
+[data-ui="switch"][data-state="checked"] .handle::before {
   content: "";
   position: absolute;
   left: 22px;
@@ -55,11 +55,11 @@
 }
 
 /* Disabled state */
-[data-component="switch"][data-disabled] {
+[data-ui="switch"][data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-[data-component="switch"][data-disabled] .handle {
+[data-ui="switch"][data-disabled] .handle {
   cursor: not-allowed;
 }

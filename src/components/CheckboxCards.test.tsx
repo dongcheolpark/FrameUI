@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
+import { render, screen, cleanup, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { CheckboxCards } from "./CheckboxCards";
 
@@ -53,13 +54,14 @@ describe("CheckboxCards (uncontrolled)", () => {
     expect(getCheckbox(checkboxes, 1)).not.toBeChecked();
   });
 
-  it("클릭 시 선택 상태가 토글된다", () => {
+  it("클릭 시 선택 상태가 토글된다", async () => {
+    const user = userEvent.setup();
     render(<CheckboxCards options={defaultOptions} />);
     const checkboxes = screen.getAllByRole("checkbox");
     const first = getCheckbox(checkboxes, 0);
-    fireEvent.click(first);
+    await user.click(first);
     expect(first).toBeChecked();
-    fireEvent.click(first);
+    await user.click(first);
     expect(first).not.toBeChecked();
   });
 });
@@ -73,19 +75,21 @@ describe("CheckboxCards (controlled)", () => {
     expect(getCheckbox(checkboxes, 1)).toBeChecked();
   });
 
-  it("클릭 시 onValueChange가 올바른 값으로 호출된다", () => {
+  it("클릭 시 onValueChange가 올바른 값으로 호출된다", async () => {
+    const user = userEvent.setup();
     const onValueChange = vi.fn();
     render(<CheckboxCards options={defaultOptions} value={[]} onValueChange={onValueChange} />);
     const checkboxes = screen.getAllByRole("checkbox");
-    fireEvent.click(getCheckbox(checkboxes, 0));
+    await user.click(getCheckbox(checkboxes, 0));
     expect(onValueChange).toHaveBeenCalledWith(["a"]);
   });
 
-  it("이미 선택된 항목 클릭 시 제거된 배열로 호출된다", () => {
+  it("이미 선택된 항목 클릭 시 제거된 배열로 호출된다", async () => {
+    const user = userEvent.setup();
     const onValueChange = vi.fn();
     render(<CheckboxCards options={defaultOptions} value={["a", "b"]} onValueChange={onValueChange} />);
     const checkboxes = screen.getAllByRole("checkbox");
-    fireEvent.click(getCheckbox(checkboxes, 0));
+    await user.click(getCheckbox(checkboxes, 0));
     expect(onValueChange).toHaveBeenCalledWith(["b"]);
   });
 });
@@ -98,11 +102,12 @@ describe("CheckboxCards (root disabled)", () => {
     checkboxes.forEach((cb) => expect(cb).toBeDisabled());
   });
 
-  it("root disabled 시 클릭해도 onValueChange가 호출되지 않는다", () => {
+  it("root disabled 시 클릭해도 onValueChange가 호출되지 않는다", async () => {
+    const user = userEvent.setup();
     const onValueChange = vi.fn();
     render(<CheckboxCards options={defaultOptions} disabled value={[]} onValueChange={onValueChange} />);
     const checkboxes = screen.getAllByRole("checkbox");
-    fireEvent.click(getCheckbox(checkboxes, 0));
+    await user.click(getCheckbox(checkboxes, 0));
     expect(onValueChange).not.toHaveBeenCalled();
   });
 });

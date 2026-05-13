@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:headlessui.com)",
+      "PowerShell(pnpm install *)",
+      "PowerShell(pnpm docs:dev *)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5174/\" -UseBasicParsing -TimeoutSec 10; \"STATUS: $\\($r.StatusCode\\)\"; $r.Content.Substring\\(0, [Math]::Min\\(600, $r.Content.Length\\)\\) } catch { \"ERR: $_\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5174/src/App.tsx\" -UseBasicParsing -TimeoutSec 10; \"STATUS: $\\($r.StatusCode\\); LEN: $\\($r.Content.Length\\)\" } catch { \"ERR: $_\" }; try { $r2 = Invoke-WebRequest -Uri \"http://localhost:5174/src/pages/ButtonPage.tsx\" -UseBasicParsing -TimeoutSec 10; \"STATUS BUTTON: $\\($r2.StatusCode\\); LEN: $\\($r2.Content.Length\\)\" } catch { \"ERR BUTTON: $_\" })"
+    ]
+  }
+}
