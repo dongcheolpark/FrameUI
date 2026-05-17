@@ -5,6 +5,7 @@
 @import "./components/Carousel.css";
 @import "./components/FileDropzone.css";
 @import "./components/Toast.css";
+@import "./components/DatePicker.css";
 
 * {
   margin: 0;

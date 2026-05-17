@@ -13,7 +13,8 @@ import {
   Modal,
   Popup,
   Pagination,
-  Toast
+  Toast,
+  DatePicker
 } from "FrameUI";
 import "./App.css";
 
@@ -61,6 +62,7 @@ export function App() {
     },
     { name: "Pagination", year: "2025", gradient: "card-gradient-4", preview: <PaginationPreview /> },
     { name: "Toast", year: "2025", gradient: "card-gradient-5", preview: <ToastPreview /> },
+    { name: "DatePicker", year: "2025", gradient: "card-gradient-6", preview: <DatePickerPreview /> },
   ];
 
   return (
@@ -315,6 +317,15 @@ function PaginationPreview() {
         ›
       </Pagination.Next>
     </Pagination>
+  );
+}
+
+function DatePickerPreview() {
+  const [date, setDate] = useState<Date | null>(null);
+  return (
+    <div className="preview-date-picker">
+      <DatePicker.Root value={date} onValueChange={setDate} locale="ko-KR" />
+    </div>
   );
 }
 
