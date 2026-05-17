@@ -107,9 +107,9 @@ export function buildMonthGrid(month: Date, weekStartsOn: WeekDay): Date[][] {
 }
 
 export interface DisabledOptions {
-  min?: Date;
-  max?: Date;
-  isDateDisabled?: (date: Date) => boolean;
+  min?: Date | undefined;
+  max?: Date | undefined;
+  isDateDisabled?: ((date: Date) => boolean) | undefined;
 }
 
 export function isDayDisabled(date: Date, { min, max, isDateDisabled }: DisabledOptions): boolean {
