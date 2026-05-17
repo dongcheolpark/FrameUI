@@ -100,3 +100,20 @@ export type {
   ToastTitleProps, ToastDescriptionProps, ToastActionProps, ToastCloseProps,
   ToastOptions, ToastItem, ToastType, ToastPriority, UseToastReturn,
 } from "./components/Toast";
+
+export { Calendar } from "./components/Calendar";
+export type {
+  CalendarRootProps,
+  CalendarHeaderProps,
+  CalendarNavButtonProps,
+  CalendarMonthLabelProps,
+  CalendarGridProps,
+} from "./components/Calendar";
+
+export { DatePicker } from "./components/DatePicker";
+export type {
+  DatePickerRootProps,
+  DatePickerTriggerProps,
+  DatePickerContentProps,
+  DatePickerCalendarProps,
+} from "./components/DatePicker";
