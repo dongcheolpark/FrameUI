@@ -33,17 +33,17 @@ import {
 } from "../internal/date";
 
 export interface CalendarRootProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
-  value?: Date | null;
-  defaultValue?: Date | null;
-  onValueChange?: (value: Date | null) => void;
-  month?: Date;
-  defaultMonth?: Date;
-  onMonthChange?: (month: Date) => void;
-  min?: Date;
-  max?: Date;
-  isDateDisabled?: (date: Date) => boolean;
-  locale?: string | Intl.Locale;
-  weekStartsOn?: WeekDay;
+  value?: Date | null | undefined;
+  defaultValue?: Date | null | undefined;
+  onValueChange?: ((value: Date | null) => void) | undefined;
+  month?: Date | undefined;
+  defaultMonth?: Date | undefined;
+  onMonthChange?: ((month: Date) => void) | undefined;
+  min?: Date | undefined;
+  max?: Date | undefined;
+  isDateDisabled?: ((date: Date) => boolean) | undefined;
+  locale?: string | Intl.Locale | undefined;
+  weekStartsOn?: WeekDay | undefined;
   children?: ReactNode;
 }
 
