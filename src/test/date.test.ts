@@ -130,7 +130,7 @@ describe("date utils", () => {
 
     it("starts on the configured weekStartsOn", () => {
       const grid = buildMonthGrid(new Date(2026, 3, 15), 1);
-      expect(grid[0][0].getDay()).toBe(1);
+      expect(grid[0]![0]!.getDay()).toBe(1);
     });
 
     it("includes the first day of the target month", () => {
@@ -141,7 +141,7 @@ describe("date utils", () => {
 
     it("first cell is on or before the first of the month", () => {
       const grid = buildMonthGrid(new Date(2026, 3, 15), 0);
-      const first = grid[0][0];
+      const first = grid[0]![0]!;
       expect(first.getTime()).toBeLessThanOrEqual(new Date(2026, 3, 1).getTime());
     });
   });
