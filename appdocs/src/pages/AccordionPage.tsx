@@ -40,6 +40,16 @@ export function AccordionPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Accordion } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Accordion은 헤더를 클릭하면 그 아래 본문이 펼쳐지고, 다시 누르면 접히는 패널 묶음입니다.
+          자주 묻는 질문(FAQ), 약관/정책 문서, 모바일 사이드바 메뉴, 긴 설정 페이지의 섹션 구분처럼
+          한 번에 모두 보여주기엔 양이 너무 많은 정보를 사용자가 필요한 부분만 펼쳐서 읽도록 도와줍니다.
+          한 번에 하나만 열리는 single 모드는 사용자의 시선을 한 항목에 집중시키고,
+          여러 개를 동시에 열 수 있는 multiple 모드는 여러 패널을 비교하며 봐야 하는 자리에서 유용합니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <p>
           기본은 <code>type="single"</code>입니다. <code>collapsible</code>을 켜면 열려있는 항목을 다시 닫을 수 있습니다.

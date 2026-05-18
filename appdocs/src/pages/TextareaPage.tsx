@@ -40,6 +40,15 @@ export function TextareaPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Textarea } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Textarea는 여러 줄에 걸친 긴 텍스트를 입력받기 위한 입력 필드입니다.
+          댓글/리뷰 작성, 메모, 채팅 메시지, 문의/지원 양식, 소셜 포스트 본문처럼 한 줄로는 모자란 자유 형식 텍스트를 받을 때 쓰입니다.
+          내용이 늘어나면 높이가 함께 늘어나기 때문에 사용자가 자신이 쓴 글 전체를 한 화면에서 보기 좋고,
+          오른쪽에 전송 버튼을 붙이는 actionSlot 패턴으로 채팅·코멘트 입력창 형태로도 자연스럽게 활용됩니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

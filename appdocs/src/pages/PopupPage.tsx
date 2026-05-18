@@ -39,6 +39,16 @@ export function PopupPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Popup } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Popup은 사용자의 작업 흐름을 막지 않고 화면 위에 잠시 떴다가 자동으로 사라지는 알림 메시지입니다.
+          "저장되었습니다", "복사 완료", "네트워크 오류" 같은 짧은 상태/결과 메시지를 사용자에게 가볍게 전달할 때 사용합니다.
+          info, success, error 세 가지 타입으로 메시지의 의미(중립/긍정/부정)를 색과 아이콘으로 함께 전달하고,
+          duration이 지나면 스스로 사라지기 때문에 사용자가 일일이 닫지 않아도 됩니다.
+          더 큰 스택과 액션 버튼이 필요하다면 Toast 컴포넌트를 사용하세요.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

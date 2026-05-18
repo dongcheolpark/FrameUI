@@ -28,6 +28,14 @@ export function SliderPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Slider } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Slider는 정해진 범위 안에서 숫자 값을 드래그로 선택하는 컨트롤입니다.
+          볼륨/밝기 조절, 가격대 필터, 영상 재생 위치, 지도의 줌 레벨처럼 연속적인 값을 시각적으로 보여주면서 입력받기 좋은 자리에 사용됩니다.
+          정확한 숫자보다 대략적인 강도나 범위를 빠르게 정해야 할 때, 또는 값의 변화를 즉시 미리 보여줘야 할 때 텍스트 입력보다 훨씬 직관적입니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

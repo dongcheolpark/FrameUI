@@ -46,6 +46,15 @@ export function RadioCardsPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { RadioCards } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          RadioCards는 여러 선택지 중에서 정확히 하나만 고를 수 있는 카드 형태의 단일 선택 컴포넌트입니다.
+          결제 수단 선택, 요금제 비교, 배송 옵션, 설문 문항처럼 보기들이 서로 배타적인 자리에 사용됩니다.
+          기본 라디오 버튼보다 카드 자체가 클릭 가능한 영역이 되어 누르기 쉽고,
+          각 옵션의 제목과 설명을 시각적으로 비교하기 좋아 사용자가 가격/기능 같은 차이를 한눈에 파악하고 결정을 내리는 데 유리합니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

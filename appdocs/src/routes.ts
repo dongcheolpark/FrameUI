@@ -14,6 +14,7 @@ import { FileDropzonePage } from "./pages/FileDropzonePage";
 import { AccordionPage } from "./pages/AccordionPage";
 import { IntroPage } from "./pages/IntroPage";
 import { ToastPage } from "./pages/ToastPage";
+import { DatePickerPage } from "./pages/DatePickerPage";
 
 export type RouteDef = {
   slug: string;
@@ -31,6 +32,7 @@ export const routes: RouteDef[] = [
   { slug: "checkbox-cards", title: "CheckboxCards", category: "Forms", component: CheckboxCardsPage },
   { slug: "radio-cards", title: "RadioCards", category: "Forms", component: RadioCardsPage },
   { slug: "file-dropzone", title: "FileDropzone", category: "Forms", component: FileDropzonePage },
+  { slug: "date-picker", title: "DatePicker", category: "Forms", component: DatePickerPage },
   { slug: "tabs", title: "Tabs", category: "Navigation", component: TabsPage },
   { slug: "pagination", title: "Pagination", category: "Navigation", component: PaginationPage },
   { slug: "accordion", title: "Accordion", category: "Disclosure", component: AccordionPage },

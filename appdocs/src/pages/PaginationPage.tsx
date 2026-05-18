@@ -121,6 +121,15 @@ export function PaginationPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Pagination } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Pagination은 한 번에 다 보여주기엔 너무 많은 데이터를 페이지 단위로 잘라서 보여주고, 사용자가 페이지를 옮겨다닐 수 있게 해 주는 네비게이션입니다.
+          게시판/댓글 목록, 검색 결과, 상품 카탈로그, 관리자 테이블처럼 수십~수천 건의 항목을 일정한 단위로 끊어 보여줘야 하는 화면에서 사용됩니다.
+          현재 페이지 번호, 양 끝/주변 페이지 번호, 이전·다음 버튼, 그리고 가운데 생략 부호(…)를 함께 제공해
+          사용자가 자신이 전체 중 어디쯤에 있는지 한눈에 파악하면서 원하는 페이지로 빠르게 점프할 수 있습니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <p>
           <code>totalPages</code> 와 <code>onPageChange</code> 만 주면 끝납니다. 화살표 끝 페이지에서는

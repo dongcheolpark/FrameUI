@@ -52,6 +52,15 @@ export function CheckboxCardsPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { CheckboxCards } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          CheckboxCards는 여러 선택지 중에서 0개 이상을 동시에 고를 수 있는 카드 형태의 다중 선택 컴포넌트입니다.
+          회원가입에서 관심사 고르기, 상품 필터의 다중 조건, 권한 설정, 알림 수신 항목 선택 같은 자리에서 사용됩니다.
+          작은 사각형 체크박스 대신 클릭 영역이 넓은 카드 한 칸 전체가 토글되기 때문에 모바일에서도 누르기 쉽고,
+          각 카드 안에 라벨과 부가 설명을 함께 노출할 수 있어 옵션의 의미를 더 명확하게 전달할 수 있습니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

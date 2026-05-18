@@ -32,6 +32,7 @@ export function IntroPage() {
           <li><a href="#/checkbox-cards">CheckboxCards</a> — 카드형 체크박스 그룹</li>
           <li><a href="#/radio-cards">RadioCards</a> — 카드형 라디오 그룹</li>
           <li><a href="#/file-dropzone">FileDropzone</a> — 드래그 앤 드롭 파일 업로드</li>
+          <li><a href="#/date-picker">DatePicker</a> — 달력 팝오버 날짜 선택</li>
           <li><a href="#/tabs">Tabs</a> — 탭 네비게이션</li>
           <li><a href="#/accordion">Accordion</a> — 접기/펼치기 패널</li>
           <li><a href="#/carousel">Carousel</a> — 슬라이드 캐러셀</li>

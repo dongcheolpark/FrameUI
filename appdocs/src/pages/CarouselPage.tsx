@@ -49,6 +49,16 @@ export function CarouselPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Carousel } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Carousel은 같은 자리에서 여러 슬라이드를 좌우(또는 상하)로 넘기며 순차적으로 보여주는 컴포넌트입니다.
+          홈페이지의 메인 배너/프로모션, 상품 상세 페이지의 이미지 갤러리, 추천 컨텐츠/리뷰 목록처럼
+          한정된 공간에 여러 시각 자료를 압축적으로 노출해야 할 때 사용됩니다.
+          마우스 드래그, 모바일 스와이프, 화살표 키, 자동 재생까지 다양한 방식으로 슬라이드를 넘길 수 있고,
+          인디케이터로 현재 위치를 알려주거나 원하는 슬라이드로 바로 점프할 수도 있습니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

@@ -26,6 +26,14 @@ export function ButtonPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Button } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Button은 사용자의 클릭(또는 키보드 Enter/Space) 한 번으로 액션을 실행시키는 가장 기본적인 UI 요소입니다.
+          폼 제출, 다이얼로그의 확인/취소, 페이지 이동, 데이터 저장, 결제 진행 등 웹 페이지 위에서 일어나는 거의 모든 인터랙션의 출발점이 됩니다.
+          라벨 텍스트로 어떤 동작이 일어날지 사용자에게 명확하게 알려주고, 비활성화 상태로 현재 실행 불가능한 액션도 시각적으로 표현할 수 있습니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <p>
           <code>label</code>은 필수이며, 그 외에는 표준 <code>ButtonHTMLAttributes</code>를 그대로 받습니다.

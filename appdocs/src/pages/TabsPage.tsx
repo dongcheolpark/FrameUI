@@ -44,6 +44,16 @@ export function TabsPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Tabs } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Tabs는 같은 화면 영역을 공유하는 여러 패널을 사용자가 한 번에 하나씩 골라 보도록 전환해 주는 네비게이션 컴포넌트입니다.
+          상품 상세 페이지의 설명/리뷰/문의, 설정 화면의 일반/계정/알림 묶음, 대시보드의 기간별 데이터처럼
+          서로 관련은 있지만 동시에 보여줄 필요가 없는 정보를 정리할 때 사용됩니다.
+          페이지를 새로 열지 않고도 컨텐츠를 그룹화해 보여주기 때문에 공간을 절약하고,
+          어디까지 봤는지 사용자에게 분명한 멘탈 모델을 제공합니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <Example
           preview={

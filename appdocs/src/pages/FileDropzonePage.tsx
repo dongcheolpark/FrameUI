@@ -51,6 +51,16 @@ export function FileDropzonePage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { FileDropzone } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          FileDropzone은 사용자가 파일을 웹 페이지에 업로드하도록 도와주는 입력 영역입니다.
+          파일 탐색기에서 끌어다 떨어뜨리는 드래그 앤 드롭, 영역 클릭으로 열리는 파일 선택창, 클립보드 붙여넣기(Ctrl+V)까지
+          세 가지 방법을 모두 지원해서 사용자가 자신에게 편한 방식으로 파일을 추가할 수 있습니다.
+          프로필 이미지/첨부 파일/문서 가져오기 같은 자리에서 사용되며,
+          허용 타입·개별 파일 용량·총 개수 검증을 내장해 잘못 올라온 파일은 즉시 거부하고 사유를 콜백으로 알려줍니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <p>
           <code>FileDropzone.Zone</code>이 클릭, 드롭, paste 이벤트를 모두 처리합니다.

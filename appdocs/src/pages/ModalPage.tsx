@@ -44,6 +44,15 @@ export function ModalPage() {
 
       <Install npm="npm install FrameUI" importStmt={`import { Modal } from "FrameUI";`} />
 
+      <Section id="overview" title="Overview">
+        <p>
+          Modal은 현재 페이지 위에 떠올라 사용자의 주의를 한곳에 모으고, 결정이나 입력을 받아내야 끝나는 차단성 다이얼로그입니다.
+          "정말 삭제하시겠어요?" 같은 확인 창, 로그인/회원가입 폼, 짧은 설문, 상세 보기, 결제 확인처럼
+          뒤쪽 컨텐츠는 잠시 멈춰두고 사용자가 한 가지 흐름에 집중해야 하는 자리에 사용됩니다.
+          오버레이 클릭이나 닫기 버튼으로 빠져나갈 수 있어 사용자의 작업 흐름을 다시 원래 위치로 매끄럽게 되돌릴 수 있습니다.
+        </p>
+      </Section>
+
       <Section id="basic-example" title="Basic example">
         <p>
           오버레이 클릭이나 닫기 버튼을 누르면 <code>onOpenChange(false)</code>가 호출됩니다.
