@@ -25,6 +25,7 @@
     "web:dev": "pnpm --filter ./web dev",
     "web:build": "pnpm --filter ./web build",
     "web:preview": "pnpm --filter ./web preview",
+    "web:deploy": "pnpm build && pnpm web:build && pnpm exec wrangler deploy --config web/wrangler.jsonc",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "test": "vitest run",
