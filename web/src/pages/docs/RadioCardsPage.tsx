@@ -44,14 +44,19 @@ export function RadioCardsPage() {
         description="단일 선택용 카드형 라디오 그룹. CheckboxCards와 같은 API 형태이지만 단일 string 값을 가집니다."
       />
 
-      <Install npm="npm install FrameUI" importStmt={`import { RadioCards } from "FrameUI";`} />
+      <Install
+        npm="npm install @frameui57/frame-ui"
+        importStmt={`import { RadioCards } from "FrameUI";`}
+      />
 
       <Section id="overview" title="Overview">
         <p>
-          RadioCards는 여러 선택지 중에서 정확히 하나만 고를 수 있는 카드 형태의 단일 선택 컴포넌트입니다.
-          결제 수단 선택, 요금제 비교, 배송 옵션, 설문 문항처럼 보기들이 서로 배타적인 자리에 사용됩니다.
-          기본 라디오 버튼보다 카드 자체가 클릭 가능한 영역이 되어 누르기 쉽고,
-          각 옵션의 제목과 설명을 시각적으로 비교하기 좋아 사용자가 가격/기능 같은 차이를 한눈에 파악하고 결정을 내리는 데 유리합니다.
+          RadioCards는 여러 선택지 중에서 정확히 하나만 고를 수 있는 카드 형태의
+          단일 선택 컴포넌트입니다. 결제 수단 선택, 요금제 비교, 배송 옵션, 설문
+          문항처럼 보기들이 서로 배타적인 자리에 사용됩니다. 기본 라디오
+          버튼보다 카드 자체가 클릭 가능한 영역이 되어 누르기 쉽고, 각 옵션의
+          제목과 설명을 시각적으로 비교하기 좋아 사용자가 가격/기능 같은 차이를
+          한눈에 파악하고 결정을 내리는 데 유리합니다.
         </p>
       </Section>
 
@@ -86,7 +91,9 @@ export function RadioCardsPage() {
                   { value: "cherry", label: "Cherry" },
                 ]}
               />
-              <span style={{ fontSize: 14, color: "var(--docs-muted)" }}>Selected: {value}</span>
+              <span style={{ fontSize: 14, color: "var(--docs-muted)" }}>
+                Selected: {value}
+              </span>
             </div>
           }
           code={controlledCode}
@@ -101,7 +108,9 @@ export function RadioCardsPage() {
                 <RadioCards.Indicator />
                 <div>
                   <RadioCards.Label>Custom A</RadioCards.Label>
-                  <RadioCards.Description>With your own layout</RadioCards.Description>
+                  <RadioCards.Description>
+                    With your own layout
+                  </RadioCards.Description>
                 </div>
               </RadioCards.Item>
               <RadioCards.Item value="b">
@@ -119,13 +128,43 @@ export function RadioCardsPage() {
       <Section id="api" title="Component API">
         <PropTable
           rows={[
-            { prop: "options", type: "RadioCardOption[]", description: "{ value, label, description?, disabled? } 배열." },
-            { prop: "value", type: "string", description: "Controlled 선택값." },
-            { prop: "defaultValue", type: "string", description: "Uncontrolled 초기 선택값." },
-            { prop: "onValueChange", type: "(value: string) => void", description: "선택이 바뀔 때 호출." },
-            { prop: "name", type: "string", description: "내부 input의 name. 폼 제출 시 사용." },
-            { prop: "disabled", type: "boolean", defaultValue: "false", description: "전체 그룹 비활성화." },
-            { prop: "invalid", type: "boolean", defaultValue: "false", description: "data-invalid 적용." },
+            {
+              prop: "options",
+              type: "RadioCardOption[]",
+              description: "{ value, label, description?, disabled? } 배열.",
+            },
+            {
+              prop: "value",
+              type: "string",
+              description: "Controlled 선택값.",
+            },
+            {
+              prop: "defaultValue",
+              type: "string",
+              description: "Uncontrolled 초기 선택값.",
+            },
+            {
+              prop: "onValueChange",
+              type: "(value: string) => void",
+              description: "선택이 바뀔 때 호출.",
+            },
+            {
+              prop: "name",
+              type: "string",
+              description: "내부 input의 name. 폼 제출 시 사용.",
+            },
+            {
+              prop: "disabled",
+              type: "boolean",
+              defaultValue: "false",
+              description: "전체 그룹 비활성화.",
+            },
+            {
+              prop: "invalid",
+              type: "boolean",
+              defaultValue: "false",
+              description: "data-invalid 적용.",
+            },
           ]}
         />
       </Section>

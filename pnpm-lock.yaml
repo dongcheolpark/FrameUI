@@ -73,6 +73,12 @@ importers:
         specifier: ^6.4.1
         version: 6.4.1(@types/node@25.5.0)(jiti@2.7.0)(lightningcss@1.32.0)
 
+  test:
+    dependencies:
+      '@frameui57/frame-ui':
+        specifier: ^1.0.0
+        version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+
   web:
     dependencies:
       FrameUI:
@@ -611,6 +617,13 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@frameui57/frame-ui@1.0.0':
+    resolution: {integrity: sha512-epDRcrkZTXX1meepqC2RqSfSwVSW/A3+c9C8/4wzb6J9NzLf0mLjATd7LQYaK8pVqIk1aMcmGhScBWcimJkmqw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      react: ^19.2.4
+      react-dom: ^19.2.4
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -2364,6 +2377,11 @@ snapshots:
 
   '@esbuild/win32-x64@0.27.3':
     optional: true
+
+  '@frameui57/frame-ui@1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
   '@img/colour@1.1.0': {}
 

@@ -769,7 +769,7 @@ function CodeSection() {
                 {
                   step: "1",
                   label: "Install the package",
-                  cmd: "npm install FrameUI",
+                  cmd: "npm install @frameui57/frame-ui",
                 },
                 {
                   step: "2",

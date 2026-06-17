@@ -78,18 +78,22 @@ export function ToastPage() {
         />
 
         <Install
-          npm="npm install FrameUI"
+          npm="npm install @frameui57/frame-ui"
           importStmt={`import { Toast } from "FrameUI";`}
         />
 
         <Section id="overview" title="Overview">
           <p>
-            Toast는 사용자의 현재 작업을 막지 않고 화면 모서리에 잠깐 떠올랐다가 사라지는 비차단 알림 시스템입니다.
-            "저장됨", "결제 완료", "복사됨" 같은 작업 결과나 "연결이 끊어졌습니다", "새 메시지" 같은 시스템 상태를
-            사용자가 보던 화면 흐름을 끊지 않으면서 알려줄 때 사용됩니다.
-            여러 알림이 동시에 생겨도 한 곳에 차곡차곡 쌓이고, 일정 시간이 지나면 스스로 닫히며,
-            "다시 시도" 같은 액션 버튼을 함께 띄워 사용자가 즉시 후속 행동을 할 수 있게 만들 수도 있습니다.
-            성공/완료처럼 굳이 시선을 강하게 끌 필요 없는 알림(background)부터 사용자의 응답이 꼭 필요한 알림(foreground)까지 두 가지 톤을 제공합니다.
+            Toast는 사용자의 현재 작업을 막지 않고 화면 모서리에 잠깐 떠올랐다가
+            사라지는 비차단 알림 시스템입니다. "저장됨", "결제 완료", "복사됨"
+            같은 작업 결과나 "연결이 끊어졌습니다", "새 메시지" 같은 시스템
+            상태를 사용자가 보던 화면 흐름을 끊지 않으면서 알려줄 때 사용됩니다.
+            여러 알림이 동시에 생겨도 한 곳에 차곡차곡 쌓이고, 일정 시간이
+            지나면 스스로 닫히며, "다시 시도" 같은 액션 버튼을 함께 띄워
+            사용자가 즉시 후속 행동을 할 수 있게 만들 수도 있습니다.
+            성공/완료처럼 굳이 시선을 강하게 끌 필요 없는 알림(background)부터
+            사용자의 응답이 꼭 필요한 알림(foreground)까지 두 가지 톤을
+            제공합니다.
           </p>
         </Section>
 
@@ -133,8 +137,7 @@ export function ToastPage() {
             <code>Toast.Close</code>에 <code>asChild</code>를 주면 FrameUI 기본
             요소 대신 사용자 컴포넌트에 ARIA / 이벤트 / data-* 가 머지됩니다.
             이벤트 핸들러는 자식 → slot 순서로 체이닝되고, 자식이{" "}
-            <code>e.preventDefault()</code>를 호출하면 slot 핸들러는
-            건너뜁니다.
+            <code>e.preventDefault()</code>를 호출하면 slot 핸들러는 건너뜁니다.
           </p>
           <Example preview={<AsChildDemo />} code={asChildCode} />
         </Section>
@@ -182,8 +185,7 @@ export function ToastPage() {
               {
                 prop: "onOpenChange",
                 type: "(open: boolean) => void",
-                description:
-                  "duration 만료 / 사용자 dismiss 시 false로 호출.",
+                description: "duration 만료 / 사용자 dismiss 시 false로 호출.",
               },
               {
                 prop: "type",
@@ -223,8 +225,7 @@ export function ToastPage() {
                 prop: "hideClose",
                 type: "boolean",
                 defaultValue: "false",
-                description:
-                  "Prop 모드의 자동 Close 버튼을 끕니다.",
+                description: "Prop 모드의 자동 Close 버튼을 끕니다.",
               },
               {
                 prop: "asChild",

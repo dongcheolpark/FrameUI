@@ -132,7 +132,7 @@ export function PaginationPage() {
       />
 
       <Install
-        npm="npm install FrameUI"
+        npm="npm install @frameui57/frame-ui"
         importStmt={`import { Pagination } from "FrameUI";`}
       />
 
