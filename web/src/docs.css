@@ -16,7 +16,13 @@
   --docs-tag-text: #4338ca;
   --docs-sidebar-w: 264px;
   --docs-content-w: 760px;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -290,14 +296,13 @@ code {
   gap: 12px;
   align-items: center;
   justify-content: center;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      var(--docs-surface),
-      var(--docs-surface) 8px,
-      var(--docs-surface-2) 8px,
-      var(--docs-surface-2) 16px
-    );
+  background: repeating-linear-gradient(
+    45deg,
+    var(--docs-surface),
+    var(--docs-surface) 8px,
+    var(--docs-surface-2) 8px,
+    var(--docs-surface-2) 16px
+  );
   border-bottom: 1px solid var(--docs-border);
   min-height: 120px;
 }
@@ -652,7 +657,9 @@ textarea:focus {
   border-radius: 8px;
   padding: 12px 14px;
   background: var(--docs-bg);
-  transition: border-color 0.1s ease, background 0.1s ease;
+  transition:
+    border-color 0.1s ease,
+    background 0.1s ease;
 }
 [data-ui="checkbox-cards-item"][data-checked],
 [data-ui="radio-cards-item"][data-checked] {
@@ -921,7 +928,9 @@ textarea:focus {
   cursor: pointer;
   background: var(--docs-surface);
   color: var(--docs-text);
-  transition: border-color 0.1s ease, background 0.1s ease;
+  transition:
+    border-color 0.1s ease,
+    background 0.1s ease;
 }
 .demo-dropzone-zone:hover,
 .demo-dropzone-zone[data-state="dragging"] {
@@ -960,6 +969,27 @@ textarea:focus {
 }
 .demo-dropzone-trigger-btn {
   align-self: flex-start;
+}
+
+.demo-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-pagination-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo-pagination-list button {
+  background: transparent;
+  border: 1px solid var(--docs-border);
+  color: var(--docs-text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 @media (max-width: 900px) {
@@ -1043,12 +1073,24 @@ textarea:focus {
   animation: toast-slide-out 160ms ease forwards;
 }
 @keyframes toast-slide-in {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 @keyframes toast-slide-out {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(24px); }
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
 }
 
 [data-ui="toast-title"] {
