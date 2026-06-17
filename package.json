@@ -1,7 +1,6 @@
 {
-  "name": "FrameUI",
+  "name": "@frameui57/frame-ui",
   "version": "1.0.0",
-  "private": true,
   "description": "React headless UI component framework",
   "type": "module",
   "main": "./dist/index.mjs",
